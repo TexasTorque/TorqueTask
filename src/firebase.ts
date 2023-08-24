@@ -12,8 +12,6 @@ import {
 } from "firebase/firestore";
 import { Task } from "../types";
 
-
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 

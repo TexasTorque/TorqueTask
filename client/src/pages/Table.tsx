@@ -1,21 +1,38 @@
-import Component from "../components/Component";
-import { Table } from "react-bootstrap";
-
+import Header from "../components/Header";
 export default () => {
   return (
-    <table >
-      <thead>
-        <tr>
-          <th>Column 1</th>
-          <th>Column 2</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Row 1 Data 1</td>
-          <td>Row 1 Data 2</td>
-        </tr>
-      </tbody>
-    </table>
+    <div className="main">
+      <Header />
+      <table className="main-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Asignee Subteam</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Summary</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Torque-Tasks</td>
+            <td>PROGRAMMING</td>
+            <td>08/22/23</td>
+            <td>08/30/23</td>
+            <td>Create website to organize tasks</td>
+            <td>In Development</td>
+          </tr>
+          <tr>
+            <td>Get daphne to leave </td>
+            <td>PROGRAMMING</td>
+            <td>08/22/23</td>
+            <td>08/30/23</td>
+            <td>Create website to organize tasks</td>
+            <td>In Development</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   );
 };
