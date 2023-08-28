@@ -3,7 +3,7 @@ import { Table } from "react-bootstrap";
 import TorqueLogo from "../imgs/TorqueLogo.png";
 import { getTasks } from "../firebase";
 // import { Task } from "../../../src/types";
-import { Task } from "../../../src/types";
+import { Task } from "../data/Types";
 import TaskLineItem from "./TaskLineItem";
 
 const TaskList = () => {
@@ -14,11 +14,11 @@ const TaskList = () => {
   });
   
   return (
-    <div className="header-border-box">
-      <Table striped>
+    <div>
+      <Table striped bordered hover variant="dark" size="sm">
         <thead>
           <tr>
-           
+             
           </tr>
         </thead>
         <tbody>
@@ -31,8 +31,6 @@ const TaskList = () => {
         </tbody>
       </Table>
     </div>
-
-
   );
 }
 export default TaskList;

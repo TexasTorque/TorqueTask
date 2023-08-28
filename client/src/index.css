@@ -13,21 +13,24 @@ h1,
 h2,
 h3,
 h4,
-p,
-th,
-td {
+p
+{
   color: white !important;
 }
-
+/* 
 table,
 th,
 td {
   border: 1px solid white;
   margin: 0;
-}
+} */
 
-td {
+/* td {
   text-align: left;
+} */
+
+.td-w {
+  width: 10rem;
 }
 
 .torque-logo {

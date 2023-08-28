@@ -1,4 +1,4 @@
-import { Task, taskData } from '../../src/types'
+import { Task, taskData } from './data/Types'
 
 const apiLoc: String = "localhost:3001";
 
