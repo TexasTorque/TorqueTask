@@ -1,12 +1,11 @@
-import torqueLogo from "../imgs/torqueLogo.png";
+import TorqueLogo from "../imgs/TorqueLogo.png";
 
-export default function Header() {
+const Header = () => {
   return (
-    <div className="header">
       <div className="header-border-box">
-        <img src={torqueLogo} className="torque-logo"></img>
-        <div className="header-name">Tuesday</div>
+        <img src={TorqueLogo} className="torque-logo"></img>
+        <div className="header-name">TorqueTask</div>
       </div>
-    </div>
   );
 }
+export default Header;

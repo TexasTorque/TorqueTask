@@ -9,14 +9,11 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
-
-
 root.render(
   <React.StrictMode>
     <Router>
       <Routes>
         <Route path="/" element={<Page />} />
-        {/* {test.getTasks()} */}
       </Routes>
     </Router>
   </React.StrictMode>

@@ -14,8 +14,8 @@ app.options("*", cors());
 
 app.use("/getTasks", routes.getTasks);
 
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-console.log("hello, world");

@@ -10,7 +10,17 @@ import {
   deleteDoc,
   onSnapshot,
 } from "firebase/firestore";
-import { Task } from "../types";
+import { Task } from "./types";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAsH5ev1GqVtpNd_u3VTEE1LCsRoiCYCTA",
+  authDomain: "torquetask.firebaseapp.com",
+  projectId: "torquetask",
+  storageBucket: "torquetask.appspot.com",
+  messagingSenderId: "416680937681",
+  appId: "1:416680937681:web:44bf69c0743123b5381df0",
+  measurementId: "G-67QYW1BC9Q",
+};
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);

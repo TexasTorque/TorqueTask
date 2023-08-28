@@ -1,5 +1,15 @@
+import { Task, taskData } from '../../src/types'
+
 const apiLoc: String = "localhost:3001";
 
 export const getTasks = async () => {
-  return (await fetch(apiLoc + "/getTasks")).json();
+  return taskData;
+  // return (await fetch(apiLoc + "/getTasks")).json();
 };
+
+export const addTask = async (task: Task) => {
+  return (await fetch(apiLoc + "/addTask", {
+    method: "POST",
+    body: JSON.stringify(task),
+  })).json();
+}

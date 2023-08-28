@@ -6,6 +6,7 @@
 
 body {
   background-color: black !important;
+  padding: 0;
 }
 
 h1,
@@ -22,45 +23,11 @@ table,
 th,
 td {
   border: 1px solid white;
+  margin: 0;
 }
 
 td {
-  text-align: center;
-}
-
-.main-table {
-  margin: 0 auto;
-  margin-top: 20px;
-  width: 100%;
-}
-
-.title {
-  font-family: "Market_Deco";
-  font-size: 40px;
-  text-align: center;
-  color: white;
-}
-
-.header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.header-name {
-  font-family: "Market_Deco";
-  color: white;
-  font-size: 2.5em;
-  margin-top: 0.2em;
-}
-
-.header-border-box {
-  display: flex;
-  padding: 8px;
-  border: 5px solid white;
-  width: 100%;
-  display: flex;
-  justify-content: center;
+  text-align: left;
 }
 
 .torque-logo {
