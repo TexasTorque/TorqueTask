@@ -9,11 +9,15 @@ export interface Task {
   name: string,
   summary: string,
   status: Status,
-  createdAt: Date,
+  createdOn: Date,
   startDate: Date,
   endDate: Date,
   assigness: string[],
 }
+
+export const taskKeys = [
+  "Name", "Summary", "Status", "Created On", "Start Date", "End Date", "Assigned To"
+];
 
 const dateNow = () => new Date(Date.now());
 
@@ -22,7 +26,7 @@ export const taskData: Task[] = [
     name: "Eat cake",
     summary: "Eat the Mr Rip birthday cake",
     status: Status.NOT_STARTED,
-    createdAt: dateNow(),
+    createdOn: dateNow(),
     startDate: dateNow(),
     endDate: dateNow(),
     assigness: ["Omar", "Daveys", "Justus", "Rohan"],
@@ -31,9 +35,9 @@ export const taskData: Task[] = [
     name: "Have a pizza PARTY",
     summary: "Geet that brothers pizza and have a party!!!",
     status: Status.NOT_STARTED,
-    createdAt: dateNow(),
+    createdOn: dateNow(),
     startDate: dateNow(),
     endDate: dateNow(),
     assigness: ["Omar", "Daveys", "Justus", "Rohan"],
   }
-]
+];

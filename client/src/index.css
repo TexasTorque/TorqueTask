@@ -17,23 +17,17 @@ p
 {
   color: white !important;
 }
-/* 
-table,
-th,
-td {
-  border: 1px solid white;
-  margin: 0;
-} */
 
-/* td {
-  text-align: left;
-} */
-
-.td-w {
-  width: 10rem;
+.title {
+  font-family: "Market_Deco";
+  height: 4rem;
 }
 
 .torque-logo {
-  width: 60px;
-  height: 60px;
+  width: 3rem;
+  height: 3rem;
+}
+
+.black-bg {
+  background-color: black; 
 }
