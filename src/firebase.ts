@@ -26,6 +26,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 export const getTasks = async (): Promise< Task[]> => {
+  console.log("hello this is not good");
   const tasksRef = collection(db, "tasks");
   const tasksSnapshot = await getDocs(tasksRef);
   const tasks:  Task[] = [];

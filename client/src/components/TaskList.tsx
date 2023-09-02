@@ -7,11 +7,11 @@ import { Task, taskKeys } from "../data/Types";
 import TaskLineItem from "./TaskLineItem";
 
 const TaskList = () => {
-  const [tasks, setTasks] = useState<Task[]>([])
+  const [tasks, setTasks] = useState<Task[]>();
 
   useEffect(() => {
     getTasks().then(tasks => setTasks(tasks));
-  });
+  }, []);
 
   return (
     <div>
@@ -23,7 +23,7 @@ const TaskList = () => {
         </thead>
         <tbody>
           {
-            tasks.map(task => {
+            tasks?.map(task => {
               return <TaskLineItem task={task}></TaskLineItem>
             })
           }
