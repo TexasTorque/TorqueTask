@@ -1,12 +1,12 @@
-import { Col, Container, Form, FormControlProps, Nav, Navbar, Row, Table } from "react-bootstrap";
+import { Button, Col, Container, Form, FormControlProps, Nav, Navbar, Row, Table } from "react-bootstrap";
 
 import TorqueLogo from "../imgs/TorqueLogo.png";
 
 import Header from "../components/Header";
-import { Task, dateFromStrISO, dateToStrISO, defaultTask } from "../data/Types";
+import { Task, dateFromStrISO, dateToStrISO, defaultTask, Subteam, Status} from "../data/Types";
 import { useEffect, useState } from "react";
 import React from "react";
-import StatusDropdown from "../components/StatusDropdown";
+import SelectorDropdown from "../components/SelectorDropdown";
 
 export default ({taskProvider}: {taskProvider: Promise<Task>}) => {
 
@@ -25,6 +25,15 @@ export default ({taskProvider}: {taskProvider: Promise<Task>}) => {
     }
   };
 
+  const updateTask = async (e: any) => {
+    e.preventDefault();
+
+    
+
+
+
+  }
+
   const SIZE = undefined;
 
   return (
@@ -39,19 +48,27 @@ export default ({taskProvider}: {taskProvider: Promise<Task>}) => {
                 <Form.Control size={SIZE} type="text" placeholder="" disabled value={task?.identifier}/>
               </Form.Group>
             </Col>
-            <Col lg={5}>      
+            <Col lg={4}>      
               <Form.Group className="mb-3" controlId="taskForm.name">
                 <Form.Label>Task Name</Form.Label>
                 <Form.Control size={SIZE} type="text"  defaultValue={task?.name} onChange={updateField("name")}/>
               </Form.Group>
             </Col>
-            <Col lg={5}>      
+            <Col lg={4}>      
               <Form.Group className="mb-3" controlId="taskForm.project">
-                <Form.Label>Task Name</Form.Label>
+                <Form.Label>Project Name</Form.Label>
                 <Form.Control size={SIZE} type="text"  defaultValue={task?.project} onChange={updateField("project")}/>
               </Form.Group>
             </Col>
+
+            <Col lg={2}>      
+              <Form.Group className="mb-3" controlId="taskForm.project">
+                <Form.Label className="invisible">{"Update task"}</Form.Label>
+                <Button className="w-100" variant="success" size={SIZE} onClick={updateTask}>Update Task</Button>
+              </Form.Group>
+            </Col>
           </Row>
+
           <Row>
             <Col>
               <Form.Group className="mb-3" controlId="taskForm.details">
@@ -64,15 +81,23 @@ export default ({taskProvider}: {taskProvider: Promise<Task>}) => {
             <Col lg={3}> 
               <Form.Group className="mb-3" controlId="taskForm.status">
                 <Form.Label>Status</Form.Label>
-                <StatusDropdown defaultValue={task?.status} size={SIZE} onChange={updateField("status")}/>
+                <SelectorDropdown options={Status} defaultValue={task?.status} size={SIZE} onChange={updateField("status")}/>
               </Form.Group> 
             </Col>
 
-          <Col lg={3}> 
-              <Form.Group className="mb-3" controlId="taskForm.startDate">
+            {/* <Col lg={3}> 
+              <Form.Group className="mb-3" controlId="taskForm.createdOn">
                 <Form.Label>Created On</Form.Label>
                 <Form.Control size={SIZE} type="date" disabled value={dateToStrISO(task?.createdOn)}
                 />
+              </Form.Group> 
+            </Col> */}
+
+            <Col lg={3}> 
+              <Form.Group className="mb-3" controlId="taskForm.subteam">
+                <Form.Label>Subteam</Form.Label>
+                <SelectorDropdown options={Subteam} defaultValue={task?.subteam} size={SIZE} onChange={updateField("subteam")}/>
+
               </Form.Group> 
             </Col>
 

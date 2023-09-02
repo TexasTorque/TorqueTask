@@ -41,3 +41,7 @@ label
 .form-control {
   /* border-radius: 0.5rem; */
 }
+
+.invisible {
+  opacity: 0%;
+}

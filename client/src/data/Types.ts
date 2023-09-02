@@ -5,12 +5,15 @@ export enum Status {
   COMPLETED = "Completed",
 }
 
-export const statusColors = {
-  [Status.NOT_STARTED]: "primary",
-  [Status.IN_PROGRESS]: "warning",
-  [Status.BLOCKED]: "danger",
-  [Status.COMPLETED]: "success",
+export enum Subteam {
+  CAD = "CAD",
+  MANUF = "Machining",
+  MECH = "Mechanical",
+  ELEC = "Electrical",
+  PROG = "Programming",
+  BIZ = "Business"
 }
+
 
 export interface Task {
   identifier: string,
@@ -22,6 +25,7 @@ export interface Task {
   startDate: Date,
   endDate: Date,
   assigness: string[],
+  subteam: string,
 }
 
 export const today = (offset: number = 0): Date => new Date(Date.now() + offset);
@@ -37,6 +41,7 @@ export const defaultTask = () => {
     startDate: today(),
     endDate: today(60 * 60 * 24 * 1000),
     assigness: [],
+    subteam: Subteam.PROG,
   }; 
 }
 
