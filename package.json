@@ -19,7 +19,9 @@
     "typescript": "^4.8.4"
   },
   "scripts": {
-    "start": "node src/index.ts"
+    "build": "tsc",
+    "serve": "node build/src/index.js",
+    "full": "tsc && node build/src/index.js"
   },
   "eslintConfig": {
     "extends": [

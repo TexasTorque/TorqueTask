@@ -10,7 +10,7 @@ import {
   deleteDoc,
   onSnapshot,
 } from "firebase/firestore";
-import { Task } from "./types";
+import { Task } from "../client/src/data/Types";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAsH5ev1GqVtpNd_u3VTEE1LCsRoiCYCTA",
@@ -25,10 +25,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export const getTasks = async (): Promise<typeof Task[]> => {
+export const getTasks = async (): Promise< Task[]> => {
   const tasksRef = collection(db, "tasks");
   const tasksSnapshot = await getDocs(tasksRef);
-  const tasks: typeof Task[] = [];
+  const tasks:  Task[] = [];
   tasksSnapshot.forEach((doc: any) => {
     tasks[doc.id] = doc.data();
   });
