@@ -5,7 +5,7 @@ It takes inspiration from Jira and Monday.com, two popular, but proprietary, tas
 
 TorqueTask was developed by [Texas Torque](https://texastorque.org) in 2023.
 
-For all questions, comments, or concerns, reach out to [Justus Languell <jus@justusl.com>](https://justusl.com).
+For all questions, comments, or concerns, reach out to [Justus Languell \<jus@justusl.com\>](https://justusl.com).
 
 ## Features/TODO
 
