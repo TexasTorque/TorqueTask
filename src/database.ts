@@ -32,22 +32,26 @@ export const getAllTasks = async (): Promise<Task[]> => {
 const taskCounterRef = doc (db, "meta", "task-counter")
 
 const getTaskCounter = async (): Promise<TaskCounter> => {
+  console.log("getCount");
   const snapshot = await getDoc(taskCounterRef);
   return snapshot.data() as TaskCounter;
 };
 
 const incrementTaskCounter = async (): Promise<void> => {
+  console.log("count++");
   await updateDoc(taskCounterRef, {
     count: increment(1)
   });
 }
 
 export const getNextIdentifier = async (): Promise<string> => {
+  console.log("nextID");
   const tc = await getTaskCounter();
   return `${tc.identifier}-${tc.count}`;
 }
 
 export const updateTask = async (task: Task): Promise<void> => {
+  console.log("updateTask");
   const ref = doc(db, TASKS_COLLECTION, task.identifier);
   if (!(await getDoc(ref)).exists())
     incrementTaskCounter();
@@ -55,6 +59,7 @@ export const updateTask = async (task: Task): Promise<void> => {
 }
 
 export const getTaskByID = async (id: string): Promise<Task | undefined> => {
+  console.log("gtbID");
   const ref = doc(db, TASKS_COLLECTION, id);
   const snapshot = await getDoc(ref);
   if (!snapshot.exists()) 

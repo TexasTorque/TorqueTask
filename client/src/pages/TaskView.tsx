@@ -7,32 +7,31 @@ import { Task, dateFromStrISO, dateToStrISO, defaultTask, Subteam, Status} from 
 import { useEffect, useState } from "react";
 import React from "react";
 import SelectorDropdown from "../components/SelectorDropdown";
-import { getTaskByID, taskTemplate, updateTask } from "../firebase";
+import { getNextIdentifier, getTaskByID, updateTask } from "../firebase";
 import { useParams } from "react-router-dom";
 
 export default ({create}: {create: boolean}) => {
 
-  const [task, setTask] = useState<Task>(defaultTask());
+  const [task, setTask] = useState<Task>(defaultTask);
 
   const id = useParams().id;
 
   useEffect(() => {
-    (create ? taskTemplate() : getTaskByID(id ?? "")).then(setTask);
-  }, [task]);
-
-  const updateField = (key: string, modifier: CallableFunction = (e: any) => e): React.ChangeEventHandler<any> => {
-    return e => {
-      const t = task as any;
-      t[key] = modifier(e.target.value);
-      setTask(t as Task);
+    if (create) {
+      getNextIdentifier().then(id => setTask({...task, identifier: id}));
+    } else {
+      getTaskByID(id ?? "").then(setTask);
     }
-  };
+  }, [setTask]);
 
   const handleUpdateTask = async (e: any) => {
     e.preventDefault();
-    console.log(task);
     const res = await updateTask(task);
     window.location.href = "/task/" + task.identifier;
+  }
+
+  const handleUpdateField = (e: any) => {
+    setTask({...task, [e.target.name]: e.target.value});
   }
 
   const SIZE = undefined;
@@ -46,19 +45,21 @@ export default ({create}: {create: boolean}) => {
             <Col lg={2}>      
               <Form.Group className="mb-3" controlId="taskForm.identifier">
                 <Form.Label>Task Number</Form.Label>
-                <Form.Control size={SIZE} type="text" placeholder="" disabled value={task?.identifier}/>
+                <Form.Control autoComplete="off" size={SIZE} type="text" placeholder="" disabled value={task?.identifier}/>
               </Form.Group>
             </Col>
             <Col lg={4}>      
               <Form.Group className="mb-3" controlId="taskForm.name">
                 <Form.Label>Task Name</Form.Label>
-                <Form.Control size={SIZE} type="text"  defaultValue={task?.name} onChange={updateField("name")}/>
+                <Form.Control autoComplete="off" size={SIZE} type="text" value={task.name} 
+                    onChange={e => handleUpdateField(e)} name="name" />
               </Form.Group>
             </Col>
             <Col lg={4}>      
               <Form.Group className="mb-3" controlId="taskForm.project">
                 <Form.Label>Project Name</Form.Label>
-                <Form.Control size={SIZE} type="text"  defaultValue={task?.project} onChange={updateField("project")}/>
+                <Form.Control autoComplete="off" size={SIZE} type="text"  value={task.project} 
+                    onChange={handleUpdateField} name="project" />
               </Form.Group>
             </Col>
 
@@ -74,7 +75,8 @@ export default ({create}: {create: boolean}) => {
             <Col>
               <Form.Group className="mb-3" controlId="taskForm.details">
                 <Form.Label>Details</Form.Label>
-                <Form.Control size={SIZE} as="textarea"  defaultValue={task?.details} onChange={updateField("details")}/>
+                <Form.Control autoComplete="off" size={SIZE} as="textarea"  value={task.details} 
+                    onChange={handleUpdateField} name="details" />
               </Form.Group> 
             </Col>
           </Row>
@@ -82,14 +84,15 @@ export default ({create}: {create: boolean}) => {
             <Col lg={3}> 
               <Form.Group className="mb-3" controlId="taskForm.status">
                 <Form.Label>Status</Form.Label>
-                <SelectorDropdown options={Status} defaultValue={task?.status} size={SIZE} onChange={updateField("status")}/>
+                <SelectorDropdown options={Status} defaultValue={task.status} size={SIZE} 
+                    onChange={handleUpdateField} name="status"/>
               </Form.Group> 
             </Col>
 
             {/* <Col lg={3}> 
               <Form.Group className="mb-3" controlId="taskForm.createdOn">
                 <Form.Label>Created On</Form.Label>
-                <Form.Control size={SIZE} type="date" disabled value={dateToStrISO(task?.createdOn)}
+                <Form.Control autoComplete="off" size={SIZE} type="date" disabled value={dateToStrISO(task?.createdOn)}
                 />
               </Form.Group> 
             </Col> */}
@@ -97,7 +100,8 @@ export default ({create}: {create: boolean}) => {
             <Col lg={3}> 
               <Form.Group className="mb-3" controlId="taskForm.subteam">
                 <Form.Label>Subteam</Form.Label>
-                <SelectorDropdown options={Subteam} defaultValue={task?.subteam} size={SIZE} onChange={updateField("subteam")}/>
+                <SelectorDropdown options={Subteam} defaultValue={task.subteam} size={SIZE} 
+                    onChange={handleUpdateField} name="subteam" />
 
               </Form.Group> 
             </Col>
@@ -105,18 +109,16 @@ export default ({create}: {create: boolean}) => {
             <Col lg={3}> 
               <Form.Group className="mb-3" controlId="taskForm.startDate">
                 <Form.Label>Start Date</Form.Label>
-                <Form.Control size={SIZE} type="date" defaultValue={task?.startDate}
-                  onChange={updateField("startDate")}
-                />
+                <Form.Control autoComplete="off" size={SIZE} type="date" value={task.startDate}
+                  onChange={handleUpdateField} name="startDate" />
               </Form.Group> 
             </Col>
 
             <Col lg={3}> 
               <Form.Group className="mb-3" controlId="taskForm.endDate">
                 <Form.Label>End Date</Form.Label>
-                <Form.Control size={SIZE} type="date" defaultValue={task?.endDate}
-                  onChange={updateField("endDate")}
-                />
+                <Form.Control autoComplete="off" size={SIZE} type="date" value={task.endDate}
+                  onChange={handleUpdateField} name="endDate" />
               </Form.Group> 
             </Col>
 

@@ -10,12 +10,6 @@ export const getNextIdentifier = async (): Promise<string> => {
   return (await fetch(api("getNextIdentifier"))).json();
 }
 
-export const taskTemplate = async (): Promise<Task> => {
-  const task = defaultTask();
-  task.identifier = await getNextIdentifier();
-  return task;
-}
-
 export const updateTask = async (task: Task): Promise<Response> => {
   return await fetch(api("updateTask"), {
     method: "POST",
@@ -30,7 +24,7 @@ export const updateTask = async (task: Task): Promise<Response> => {
 export const getTaskByID = async (id: string): Promise<Task> => {
   const res = await fetch(api("getTaskByID?id=" + id))
   if (!res.ok) {
-    window.location.href = "/bad";
+    window.location.href = "/task/new";
   }
   return res.json() as Promise<Task>;
 }

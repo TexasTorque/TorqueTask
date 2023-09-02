@@ -31,8 +31,7 @@ export const today = (offset: number = 0): Date => new Date(Date.now() + offset)
 export const dateToStrISO = (d: Date): string => d.toISOString().substring(0, 10);
 export const dateFromStrISO = (v: string) => new Date(v + "T12:00:00");
 
-export const defaultTask = () => { 
-  return {
+export const defaultTask = { 
     identifier: "",
     name: "",
     project: "",
@@ -43,8 +42,7 @@ export const defaultTask = () => {
     endDate: dateToStrISO(today(60 * 60 * 24 * 1000)),
     assigness: [],
     subteam: Subteam.PROG,
-  }; 
-}
+};
 
 export interface TaskCounter {
   identifier: string,
