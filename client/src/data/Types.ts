@@ -5,9 +5,17 @@ export enum Status {
   COMPLETED = "Completed",
 }
 
+export const statusColors = {
+  [Status.NOT_STARTED]: "primary",
+  [Status.IN_PROGRESS]: "warning",
+  [Status.BLOCKED]: "danger",
+  [Status.COMPLETED]: "success",
+}
+
 export interface Task {
+  identifier: string,
   name: string,
-  summary: string,
+  details: string,
   status: Status,
   createdOn: Date,
   startDate: Date,
@@ -15,32 +23,24 @@ export interface Task {
   assigness: string[],
 }
 
-export const taskKeys = [
-  "Name", "Summary", "Status", "Created On", "Start Date", "End Date", "Assigned To"
-];
+export const today = (offset: number = 0): Date => new Date(Date.now() + offset);
 
-const dateNow = () => new Date(Date.now());
+export const defaultTask = () => { 
+  return {
+    identifier: "NULL",
+    name: "Name",
+    details: "",
+    status: Status.NOT_STARTED,
+    createdOn: today(),
+    startDate: today(),
+    endDate: today(60 * 60 * 24 * 1000),
+    assigness: [],
+  }; 
+}
 
-export const taskData: Task[] = [
-  {
-    name: "Eat cake",
-    summary: "Eat the Mr Rip birthday cake",
-    status: Status.NOT_STARTED,
-    createdOn: dateNow(),
-    startDate: dateNow(),
-    endDate: dateNow(),
-    assigness: ["Omar", "Daveys", "Justus", "Rohan"],
-  },
-  {
-    name: "Have a pizza PARTY",
-    summary: "Geet that brothers pizza and have a party!!!",
-    status: Status.NOT_STARTED,
-    createdOn: dateNow(),
-    startDate: dateNow(),
-    endDate: dateNow(),
-    assigness: ["Omar", "Daveys", "Justus", "Rohan"],
-  }
-];
+export const dateToStrISO = (d: Date): string => d.toISOString().substring(0, 10);
+
+export const dateFromStrISO = (v: string) => new Date(v + "T12:00:00");
 
 export interface TaskCounter {
   identifier: string,

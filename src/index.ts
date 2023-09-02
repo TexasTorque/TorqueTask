@@ -12,6 +12,8 @@ app.options("*", cors());
 
 app.use("/getAllTasks", routes.getAllTasks);
 
+app.use("/getNextIdentifier", routes.getNextIdentifier);
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

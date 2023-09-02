@@ -13,16 +13,7 @@ import {
 } from "firebase/firestore";
 import { Task, TaskCounter } from "../client/src/data/Types";
 
-import path from "path";
-import { fileURLToPath } from "url";
-import fs from "fs";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const jsonPath = path.join(__dirname, "firebaseconfig.json");
-const firebaseConfig = JSON.parse(fs.readFileSync(jsonPath).toString());
-
+import * as firebaseConfig from './config.json';
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
@@ -55,7 +46,13 @@ const incrementTaskCounter = async (): Promise<void> => {
   });
 }
 
-export const getTaskSymbol = async (): Promise<string> => {
+export const getNextIdentifier = async (): Promise<string> => {
   const tc = await getTaskCounter();
   return `${tc.identifier}-${tc.count}`;
 }
+
+// export const addTask = async (): Promise<void> {
+
+  
+
+// }
