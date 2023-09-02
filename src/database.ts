@@ -29,7 +29,6 @@ export const getAllTasks = async (): Promise<Task[]> => {
   return tasks;
 };
 
-
 const taskCounterRef = doc (db, "meta", "task-counter")
 
 const getTaskCounter = async (): Promise<TaskCounter> => {
@@ -51,8 +50,8 @@ export const getNextIdentifier = async (): Promise<string> => {
   return `${tc.identifier}-${tc.count}`;
 }
 
-// export const addTask = async (): Promise<void> {
-
-  
-
-// }
+export const updateTask = async (task: Task): Promise<void> => {
+  const ref = doc(db, TASKS_COLLECTION, task.identifier);
+  await setDoc(ref, task, { merge: true });
+  incrementTaskCounter();
+}

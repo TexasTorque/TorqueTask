@@ -7,6 +7,7 @@ import { Task, dateFromStrISO, dateToStrISO, defaultTask, Subteam, Status} from 
 import { useEffect, useState } from "react";
 import React from "react";
 import SelectorDropdown from "../components/SelectorDropdown";
+import { updateTask } from "../firebase";
 
 export default ({taskProvider}: {taskProvider: Promise<Task>}) => {
 
@@ -21,17 +22,13 @@ export default ({taskProvider}: {taskProvider: Promise<Task>}) => {
       const t = task as any;
       t[key] = modifier(e.target.value);
       setTask(t as Task);
-      console.log(task);
     }
   };
 
-  const updateTask = async (e: any) => {
+  const handleUpdateTask = async (e: any) => {
     e.preventDefault();
-
-    
-
-
-
+    const res = await updateTask(task);
+    window.location.href = "/task/" + task.identifier;
   }
 
   const SIZE = undefined;
@@ -64,7 +61,7 @@ export default ({taskProvider}: {taskProvider: Promise<Task>}) => {
             <Col lg={2}>      
               <Form.Group className="mb-3" controlId="taskForm.project">
                 <Form.Label className="invisible">{"Update task"}</Form.Label>
-                <Button className="w-100" variant="success" size={SIZE} onClick={updateTask}>Update Task</Button>
+                <Button className="w-100" variant="success" size={SIZE} onClick={handleUpdateTask}>Update Task</Button>
               </Form.Group>
             </Col>
           </Row>
