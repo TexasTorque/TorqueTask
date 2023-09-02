@@ -33,9 +33,6 @@ const taskCounterRef = doc (db, "meta", "task-counter")
 
 const getTaskCounter = async (): Promise<TaskCounter> => {
   const snapshot = await getDoc(taskCounterRef);
-  if (!snapshot.exists()) {
-    // return  
-  }
   return snapshot.data() as TaskCounter;
 };
 
@@ -52,6 +49,15 @@ export const getNextIdentifier = async (): Promise<string> => {
 
 export const updateTask = async (task: Task): Promise<void> => {
   const ref = doc(db, TASKS_COLLECTION, task.identifier);
+  if (!(await getDoc(ref)).exists())
+    incrementTaskCounter();
   await setDoc(ref, task, { merge: true });
-  incrementTaskCounter();
+}
+
+export const getTaskByID = async (id: string): Promise<Task | undefined> => {
+  const ref = doc(db, TASKS_COLLECTION, id);
+  const snapshot = await getDoc(ref);
+  if (!snapshot.exists()) 
+    return undefined; 
+  return snapshot.data() as Task;
 }

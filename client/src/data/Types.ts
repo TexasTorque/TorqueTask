@@ -14,21 +14,22 @@ export enum Subteam {
   BIZ = "Business"
 }
 
-
 export interface Task {
   identifier: string,
   name: string,
   project: string,
   details: string,
   status: Status,
-  createdOn: Date,
-  startDate: Date,
-  endDate: Date,
+  createdOn: string,
+  startDate: string,
+  endDate: string,
   assigness: string[],
-  subteam: string,
+  subteam: Subteam,
 }
 
 export const today = (offset: number = 0): Date => new Date(Date.now() + offset);
+export const dateToStrISO = (d: Date): string => d.toISOString().substring(0, 10);
+export const dateFromStrISO = (v: string) => new Date(v + "T12:00:00");
 
 export const defaultTask = () => { 
   return {
@@ -37,17 +38,13 @@ export const defaultTask = () => {
     project: "",
     details: "",
     status: Status.NOT_STARTED,
-    createdOn: today(),
-    startDate: today(),
-    endDate: today(60 * 60 * 24 * 1000),
+    createdOn: dateToStrISO(today()),
+    startDate: dateToStrISO(today()),
+    endDate: dateToStrISO(today(60 * 60 * 24 * 1000)),
     assigness: [],
     subteam: Subteam.PROG,
   }; 
 }
-
-export const dateToStrISO = (d: Date): string => d.toISOString().substring(0, 10);
-
-export const dateFromStrISO = (v: string) => new Date(v + "T12:00:00");
 
 export interface TaskCounter {
   identifier: string,

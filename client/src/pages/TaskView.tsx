@@ -7,14 +7,17 @@ import { Task, dateFromStrISO, dateToStrISO, defaultTask, Subteam, Status} from 
 import { useEffect, useState } from "react";
 import React from "react";
 import SelectorDropdown from "../components/SelectorDropdown";
-import { updateTask } from "../firebase";
+import { getTaskByID, taskTemplate, updateTask } from "../firebase";
+import { useParams } from "react-router-dom";
 
-export default ({taskProvider}: {taskProvider: Promise<Task>}) => {
+export default ({create}: {create: boolean}) => {
 
   const [task, setTask] = useState<Task>(defaultTask());
 
+  const id = useParams().id;
+
   useEffect(() => {
-    taskProvider.then(setTask);
+    (create ? taskTemplate() : getTaskByID(id ?? "")).then(setTask);
   }, [task]);
 
   const updateField = (key: string, modifier: CallableFunction = (e: any) => e): React.ChangeEventHandler<any> => {
@@ -27,6 +30,7 @@ export default ({taskProvider}: {taskProvider: Promise<Task>}) => {
 
   const handleUpdateTask = async (e: any) => {
     e.preventDefault();
+    console.log(task);
     const res = await updateTask(task);
     window.location.href = "/task/" + task.identifier;
   }
@@ -101,8 +105,8 @@ export default ({taskProvider}: {taskProvider: Promise<Task>}) => {
             <Col lg={3}> 
               <Form.Group className="mb-3" controlId="taskForm.startDate">
                 <Form.Label>Start Date</Form.Label>
-                <Form.Control size={SIZE} type="date" defaultValue={dateToStrISO(task?.startDate)}
-                  onChange={updateField("startDate", dateFromStrISO)}
+                <Form.Control size={SIZE} type="date" defaultValue={task?.startDate}
+                  onChange={updateField("startDate")}
                 />
               </Form.Group> 
             </Col>
@@ -110,8 +114,8 @@ export default ({taskProvider}: {taskProvider: Promise<Task>}) => {
             <Col lg={3}> 
               <Form.Group className="mb-3" controlId="taskForm.endDate">
                 <Form.Label>End Date</Form.Label>
-                <Form.Control size={SIZE} type="date" defaultValue={dateToStrISO(task?.endDate)}
-                  onChange={updateField("endDate", dateFromStrISO)}
+                <Form.Control size={SIZE} type="date" defaultValue={task?.endDate}
+                  onChange={updateField("endDate")}
                 />
               </Form.Group> 
             </Col>

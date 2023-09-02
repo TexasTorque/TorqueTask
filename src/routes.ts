@@ -16,3 +16,11 @@ export const updateTask = async (req: Request, res: Response) => {
   await database.updateTask(task);
   res.json({});
 }
+
+export const getTaskByID = async (req: Request, res: Response) => {
+  const t = await database.getTaskByID(req.query.id as string);
+  if (t === undefined)
+    res.sendStatus(500);
+    // res.redirect("/new");
+  res.json(t);
+};

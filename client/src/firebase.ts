@@ -26,3 +26,11 @@ export const updateTask = async (task: Task): Promise<Response> => {
     body: JSON.stringify(task)
   });
 }
+
+export const getTaskByID = async (id: string): Promise<Task> => {
+  const res = await fetch(api("getTaskByID?id=" + id))
+  if (!res.ok) {
+    window.location.href = "/bad";
+  }
+  return res.json() as Promise<Task>;
+}
