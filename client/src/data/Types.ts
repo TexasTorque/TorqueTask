@@ -41,3 +41,8 @@ export const taskData: Task[] = [
     assigness: ["Omar", "Daveys", "Justus", "Rohan"],
   }
 ];
+
+export interface TaskCounter {
+  identifier: string,
+  count: number
+}

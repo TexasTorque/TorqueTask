@@ -1,5 +1,5 @@
-import * as firebase from "./firebase";
+import * as database from "./database";
 
-export const getTasks = async (req: any, res: any) => {
-  res.json(await firebase.getTasks());
+export const getAllTasks = async (req: any, res: any) => {
+  res.json(await database.getAllTasks());
 };
