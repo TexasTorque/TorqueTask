@@ -7,7 +7,7 @@ import Header from "../components/Header";
 export default () => {
   return (
     <div className="main">
-      <Header/>
+      <Header fluid/>
       <TaskList/>
     </div>
   );

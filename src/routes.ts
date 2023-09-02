@@ -17,7 +17,10 @@ export const updateTask = async (req: Request, res: Response) => {
   res.json({});
 }
 
+var ngtbid = 0;
+
 export const getTaskByID = async (req: Request, res: Response) => {
+  console.log(ngtbid++);
   const t = await database.getTaskByID(req.query.id as string);
   if (t === undefined)
     res.sendStatus(500);

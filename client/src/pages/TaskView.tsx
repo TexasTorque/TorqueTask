@@ -13,19 +13,23 @@ import { useParams } from "react-router-dom";
 export default ({create}: {create: boolean}) => {
 
   const [task, setTask] = useState<Task>(defaultTask);
+  const [loaded, setLoaded] = useState<boolean>(false);
 
   const id = useParams().id;
 
   useEffect(() => {
     if (create) {
-      getNextIdentifier().then(id => setTask({...task, identifier: id}));
+      getNextIdentifier().then(id => setTask({...task, identifier: id}))
+          .then(_ => setLoaded(true));
     } else {
-      getTaskByID(id ?? "").then(setTask);
+      getTaskByID(id ?? "").then(setTask)
+          .then(_ => setLoaded(true));
     }
-  }, [setTask]);
+  }, [setTask, setLoaded]);
 
   const handleUpdateTask = async (e: any) => {
     e.preventDefault();
+    console.log(task);
     const res = await updateTask(task);
     window.location.href = "/task/" + task.identifier;
   }
@@ -35,6 +39,8 @@ export default ({create}: {create: boolean}) => {
   }
 
   const SIZE = undefined;
+
+  if (!loaded) return <div></div>;
 
   return (
     <div className="main">
@@ -88,15 +94,6 @@ export default ({create}: {create: boolean}) => {
                     onChange={handleUpdateField} name="status"/>
               </Form.Group> 
             </Col>
-
-            {/* <Col lg={3}> 
-              <Form.Group className="mb-3" controlId="taskForm.createdOn">
-                <Form.Label>Created On</Form.Label>
-                <Form.Control autoComplete="off" size={SIZE} type="date" disabled value={dateToStrISO(task?.createdOn)}
-                />
-              </Form.Group> 
-            </Col> */}
-
             <Col lg={3}> 
               <Form.Group className="mb-3" controlId="taskForm.subteam">
                 <Form.Label>Subteam</Form.Label>
@@ -105,7 +102,6 @@ export default ({create}: {create: boolean}) => {
 
               </Form.Group> 
             </Col>
-
             <Col lg={3}> 
               <Form.Group className="mb-3" controlId="taskForm.startDate">
                 <Form.Label>Start Date</Form.Label>

@@ -24,7 +24,7 @@ export const getAllTasks = async (): Promise<Task[]> => {
   const snapshot = await getDocs(ref);
   const tasks: Task[] = [];
   snapshot.forEach((doc: any) => {
-    tasks[doc.id] = doc.data();
+    tasks.push(doc.data());
   });
   return tasks;
 };

@@ -1,14 +1,21 @@
-import { Navbar } from "react-bootstrap";
+import { Col, Container, Navbar, Row } from "react-bootstrap";
 import TorqueLogo from "../imgs/TorqueLogo.png";
 
-const Header = () => {
+const Header = ({fluid}: {fluid?: boolean}) => {
   return (
-    <Navbar className="black-bg">
-      <Navbar.Brand className="" href="#home"><img className="torque-logo" src={TorqueLogo}></img></Navbar.Brand>
-      <Navbar.Brand className="" href="#home"><h1 className="title">Torque Task</h1></Navbar.Brand>
-        {/* <Nav className="me-auto"> */}
-          {/* <Nav.Link href="#home"><p>Link</p></Nav.Link> */}
-        {/* </Nav> */}
+      <Navbar className="med-gray-bg">
+        <Container fluid={fluid ?? false}>
+        <Row>
+          <Col sm={2}>
+            <br></br>
+            <Navbar.Brand className="" href="/"><img className="torque-logo" src={TorqueLogo}></img></Navbar.Brand>
+          </Col>
+          <Col sm={10}>
+            <br></br>
+            <Navbar.Brand className="" href="/"><h1 className="title">Torque Task</h1></Navbar.Brand>
+          </Col>
+        </Row>
+        </Container>
       </Navbar>
   );
 }
