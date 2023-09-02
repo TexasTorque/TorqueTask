@@ -15,6 +15,7 @@ export const statusColors = {
 export interface Task {
   identifier: string,
   name: string,
+  project: string,
   details: string,
   status: Status,
   createdOn: Date,
@@ -27,8 +28,9 @@ export const today = (offset: number = 0): Date => new Date(Date.now() + offset)
 
 export const defaultTask = () => { 
   return {
-    identifier: "NULL",
-    name: "Name",
+    identifier: "",
+    name: "",
+    project: "",
     details: "",
     status: Status.NOT_STARTED,
     createdOn: today(),

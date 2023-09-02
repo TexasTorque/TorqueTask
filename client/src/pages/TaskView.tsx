@@ -24,7 +24,8 @@ export default ({taskProvider}: {taskProvider: Promise<Task>}) => {
       console.log(task);
     }
   };
-  
+
+  const SIZE = undefined;
 
   return (
     <div className="main">
@@ -32,16 +33,22 @@ export default ({taskProvider}: {taskProvider: Promise<Task>}) => {
       <Container>
         <Form>
           <Row>
-            <Col lg={3}>      
+            <Col lg={2}>      
               <Form.Group className="mb-3" controlId="taskForm.identifier">
                 <Form.Label>Task Number</Form.Label>
-                <Form.Control size="lg" type="text" placeholder="" disabled value={task?.identifier}/>
+                <Form.Control size={SIZE} type="text" placeholder="" disabled value={task?.identifier}/>
               </Form.Group>
             </Col>
-            <Col lg={9}>      
+            <Col lg={5}>      
               <Form.Group className="mb-3" controlId="taskForm.name">
                 <Form.Label>Task Name</Form.Label>
-                <Form.Control size="lg" type="text"  defaultValue={task?.name} onChange={updateField("name")}/>
+                <Form.Control size={SIZE} type="text"  defaultValue={task?.name} onChange={updateField("name")}/>
+              </Form.Group>
+            </Col>
+            <Col lg={5}>      
+              <Form.Group className="mb-3" controlId="taskForm.project">
+                <Form.Label>Task Name</Form.Label>
+                <Form.Control size={SIZE} type="text"  defaultValue={task?.project} onChange={updateField("project")}/>
               </Form.Group>
             </Col>
           </Row>
@@ -49,22 +56,30 @@ export default ({taskProvider}: {taskProvider: Promise<Task>}) => {
             <Col>
               <Form.Group className="mb-3" controlId="taskForm.details">
                 <Form.Label>Details</Form.Label>
-                <Form.Control size="lg" as="textarea"  defaultValue={task?.details} onChange={updateField("details")}/>
+                <Form.Control size={SIZE} as="textarea"  defaultValue={task?.details} onChange={updateField("details")}/>
               </Form.Group> 
             </Col>
           </Row>
           <Row>
-            <Col lg={2}> 
+            <Col lg={3}> 
               <Form.Group className="mb-3" controlId="taskForm.status">
                 <Form.Label>Status</Form.Label>
-                <StatusDropdown defaultValue={task?.status} onChange={updateField("status")}/>
+                <StatusDropdown defaultValue={task?.status} size={SIZE} onChange={updateField("status")}/>
+              </Form.Group> 
+            </Col>
+
+          <Col lg={3}> 
+              <Form.Group className="mb-3" controlId="taskForm.startDate">
+                <Form.Label>Created On</Form.Label>
+                <Form.Control size={SIZE} type="date" disabled value={dateToStrISO(task?.createdOn)}
+                />
               </Form.Group> 
             </Col>
 
             <Col lg={3}> 
               <Form.Group className="mb-3" controlId="taskForm.startDate">
                 <Form.Label>Start Date</Form.Label>
-                <Form.Control size="lg" type="date" defaultValue={dateToStrISO(task?.startDate)}
+                <Form.Control size={SIZE} type="date" defaultValue={dateToStrISO(task?.startDate)}
                   onChange={updateField("startDate", dateFromStrISO)}
                 />
               </Form.Group> 
@@ -73,7 +88,7 @@ export default ({taskProvider}: {taskProvider: Promise<Task>}) => {
             <Col lg={3}> 
               <Form.Group className="mb-3" controlId="taskForm.endDate">
                 <Form.Label>End Date</Form.Label>
-                <Form.Control size="lg" type="date" defaultValue={dateToStrISO(task?.endDate)}
+                <Form.Control size={SIZE} type="date" defaultValue={dateToStrISO(task?.endDate)}
                   onChange={updateField("endDate", dateFromStrISO)}
                 />
               </Form.Group> 
