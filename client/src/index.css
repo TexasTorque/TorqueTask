@@ -98,3 +98,7 @@ a {
 .details-view {
   height: 12rem;
 }
+
+.npm-version {
+  margin-right: 1em;
+}

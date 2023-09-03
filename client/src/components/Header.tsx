@@ -1,4 +1,5 @@
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
+import npmPackage from "../../package.json";
 
 const Header = ({
   fluid,
@@ -33,8 +34,10 @@ const Header = ({
             </Button>
           </Nav.Item>
         </Nav>
+        <Navbar.Text className="npm-version">{`v. ${npmPackage.version}`}</Navbar.Text>
+
         {typeof setSearchQuery === "function" ? (
-          <div className="">
+          <div>
             <input
               type="text"
               placeholder="Search"
