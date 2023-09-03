@@ -1,11 +1,11 @@
-.bar-progress { fill: rgb(34, 37, 41) !important; }
+.bar-progress { fill: rgb(64, 132, 88) !important; }
 
 .today-highlight {
   fill: red !important;
 }
 
 .bar-label {
-  fill: white !important;
+  fill: black !important;
   font-size: 14px !important;
   font-weight: normal !important;
 }

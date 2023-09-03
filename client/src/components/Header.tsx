@@ -16,6 +16,9 @@ const Header = ({ fluid }: { fluid?: boolean }) => {
           <Nav.Link href="/gantt">
             <Nav.Link href="/gantt">Gantt</Nav.Link>
           </Nav.Link> 
+          <Nav.Link href="/docs">
+            <Nav.Link href="/docs">Help</Nav.Link>
+          </Nav.Link> 
           <Nav.Item className="nav-btn">
               <Button variant="success" size="sm" onClick={e => window.location.href = "/new"}>New Task</Button>
           </Nav.Item>

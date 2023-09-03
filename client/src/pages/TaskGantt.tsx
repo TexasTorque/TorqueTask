@@ -40,6 +40,24 @@ export default () => {
     });
   }, [setTasks]);
 
+  const progressLevels = {
+    [Status.NOT_STARTED]: 5,
+    [Status.IN_PROGRESS]: -1,
+    [Status.BLOCKED]: 0,
+    [Status.COMPLETED]: 100,
+  }
+
+  const calcProgressBar = (t: Task): number => {
+    const p = progressLevels[t.status];
+    if (p != -1) return p;
+
+    const s = new Date(t.startDate).getTime();
+    const e = new Date(t.endDate).getTime();
+    const n = Date.now()
+    const o = 0 * 60 * 60 * 1000;
+    return (n - o - s) / (e - s) * 100;
+  }
+
   const formatForGantt = (tasks: Task[]): any[] => {
     var tasksForGantt: any[] = [];
     setHeight(`${55 * tasks.length + 50}px`);
@@ -50,7 +68,7 @@ export default () => {
         start: task.startDate,
         end: task.endDate,
         dependencies: "",
-        progress: 100,
+        progress: calcProgressBar(task)
       });
     });
     return tasksForGantt;
@@ -59,7 +77,8 @@ export default () => {
   return (
     <>
       <Header fluid/>
-      <Container fluid >
+      <Container fluid>
+        <p>Double click on a cell to go to that tasks. We are already working on an improved GANTT chart system.</p>
         <svg style={{height: height}} id="gantt"></svg>
       </Container>
     </>
