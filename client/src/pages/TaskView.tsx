@@ -47,7 +47,6 @@ export default ({create}: {create: boolean}) => {
       <Header/>
       <Container>
         <Form>
-
           <Row>
             <Col lg={2}>      
               <Form.Group className="mb-3" controlId="taskForm.identifier">
@@ -112,7 +111,7 @@ export default ({create}: {create: boolean}) => {
             <Col>
               <Form.Group className="mb-3" controlId="taskForm.details">
                 <Form.Label>Details</Form.Label>
-                <Form.Control autoComplete="off" size={SIZE} as="textarea"  value={task.details} 
+                <Form.Control className="details-view" autoComplete="off" size={SIZE} as="textarea"  value={task.details} 
                     onChange={handleUpdateField} name="details" />
               </Form.Group> 
             </Col>

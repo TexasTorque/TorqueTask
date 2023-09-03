@@ -18,7 +18,9 @@ For all questions, comments, or concerns, reach out to [Justus Languell \<jus@ju
 - [X] Implement an auto ID system.
 - [ ] Add a field and modifier for assignee.
 - [ ] Add a field and control for block/blocks.
-- [ ] Make viewable in a GAANT chart.
+- [X] Make viewable in a GAANT chart.
+- [ ] Make an improved GAANT chart.
+- [ ] Dark and light mode.
 - [ ] About, user instructions, and help page.
 - [ ] More advanced data validation.
 - [ ] Make the header look good.
@@ -32,7 +34,7 @@ For all questions, comments, or concerns, reach out to [Justus Languell \<jus@ju
 - [ ] Convert projects to a smart dropdown where the user can add fields.
 - [ ] Message system file uploads.
 - [ ] Message system user mentioning.
-- [ ] Support for multible organizations.
+- [ ] Support for editable organizations.
 
 ## Code
 
