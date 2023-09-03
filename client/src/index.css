@@ -1,3 +1,25 @@
+.bar-progress { fill: rgb(34, 37, 41) !important; }
+
+.today-highlight {
+  fill: red !important;
+}
+
+.bar-label {
+  fill: white !important;
+  font-size: 14px !important;
+  font-weight: normal !important;
+}
+
+.big {
+  fill: black !important;
+}
+
+.popup {
+  width: 5rem;
+  padding: .5rem;
+  height: 2.2rem;
+}
+
 @font-face {
   font-family: "Market_Deco";
   src: local("Market_Deco"), url("./fonts/Market_Deco.ttf") format("truetype");
@@ -71,10 +93,7 @@ a {
   width: 100%;
 }
 
-.form-control {
-  /* border-radius: 0.5rem; */
-}
-
 .invisible {
   opacity: 0%;
 }
+

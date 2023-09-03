@@ -3,9 +3,8 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Route, Routes, useNavigate, useParams } from "react-router-dom";
 import "./index.css";
 import TaskTable from "./pages/TaskTable";
-import * as test from "./firebase";
 import TaskView from "./pages/TaskView";
-import { getTaskByID } from "./firebase";
+import TaskGantt from "./pages/TaskGantt";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -19,6 +18,7 @@ root.render(
         <Route path="/table" element={<TaskTable />} />
         <Route path="/new" element={<TaskView create={true} />} />
         <Route path="/task/:id" element={<TaskView create={false}/>} />
+        <Route path="/gantt" element={<TaskGantt />} />
       </Routes>
     </Router>
   </React.StrictMode>
