@@ -1,28 +1,38 @@
-
 import Header from "../components/Header";
-
-import {ReactElement, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Table } from "react-bootstrap";
-import TorqueLogo from "../imgs/TorqueLogo.png";
 import { getAllTasks } from "../firebase";
-// import { Task } from "../../../src/types";
-import { Status, Subteam, Task } from "../data/Types";
+import { Task } from "../data/Types";
 import SelectorDropdown from "../components/SelectorDropdown";
 
-const TaskLineItem = ({ task }: {task: Task}) => {
+const TaskLineItem = ({ task }: { task: Task }) => {
   return (
     <tr>
-      <td><a href={"/task/" + task.identifier}>{task.identifier}</a></td>
+      <td>
+        <a href={"/task/" + task.identifier}>{task.identifier}</a>
+      </td>
       <td>{task.name}</td>
       <td>{task.project}</td>
       <td>{task.details}</td>
       <td>
-        <SelectorDropdown options={{}} defaultValue={task.status} size="sm" 
-                    onChange={(_: any) => _} name="subteam" disabled/>
+        <SelectorDropdown
+          options={{}}
+          defaultValue={task.status}
+          size="sm"
+          onChange={(_: any) => _}
+          name="subteam"
+          disabled
+        />
       </td>
       <td>
-        <SelectorDropdown options={{}} defaultValue={task.subteam} size="sm" 
-                    onChange={(_: any) => _} disabled name="subteam"/>
+        <SelectorDropdown
+          options={{}}
+          defaultValue={task.subteam}
+          size="sm"
+          onChange={(_: any) => _}
+          disabled
+          name="subteam"
+        />
       </td>
       <td>{task.startDate}</td>
       <td>{task.endDate}</td>
@@ -32,6 +42,7 @@ const TaskLineItem = ({ task }: {task: Task}) => {
 
 export default () => {
   const [tasks, setTasks] = useState<Task[]>();
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     getAllTasks().then(setTasks);
@@ -39,8 +50,8 @@ export default () => {
 
   return (
     <>
-      <Header fluid/>
-      <Container fluid >
+      <Header fluid setSearchQuery={setSearchQuery} />
+      <Container fluid>
         <Table striped bordered hover variant="dark" size="sm">
           <thead>
             <tr>
@@ -55,15 +66,16 @@ export default () => {
             </tr>
           </thead>
           <tbody>
-            {
-              tasks?.map(task => {
-                return <TaskLineItem task={task}></TaskLineItem>
-              })
-            }
-          
+            {tasks
+              ?.filter((task) =>
+                task.name.toLowerCase().includes(searchQuery.toLowerCase())
+              )
+              .map((task, id) => {
+                return <TaskLineItem task={task} key={id}></TaskLineItem>;
+              })}
           </tbody>
         </Table>
       </Container>
     </>
   );
-}
+};
