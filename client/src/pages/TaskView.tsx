@@ -9,6 +9,7 @@ import React from "react";
 import SelectorDropdown from "../components/SelectorDropdown";
 import { getNextIdentifier, getTaskByID, updateTask } from "../firebase";
 import { useParams } from "react-router-dom";
+import StringList from "../components/StringList";
 
 export default ({create}: {create: boolean}) => {
 
@@ -108,13 +109,23 @@ export default ({create}: {create: boolean}) => {
           </Row>
 
           <Row>
-            <Col>
+            <Col lg={9}>
               <Form.Group className="mb-3" controlId="taskForm.details">
                 <Form.Label>Details</Form.Label>
                 <Form.Control className="details-view" autoComplete="off" size={SIZE} as="textarea"  value={task.details} 
                     onChange={handleUpdateField} name="details" />
               </Form.Group> 
             </Col>
+
+            <Col lg={3}>
+              <Form.Group className="mb-3" controlId="taskForm.assignees">
+                <Form.Label>Assignees</Form.Label>
+                {/* <Form.Control className="details-view" autoComplete="off" size={SIZE} as="textarea"  value={task.details} 
+                    onChange={handleUpdateField} name="details" /> */}
+                <StringList defaultValue={task.assigness} onChange={handleUpdateField} name="asignees"/>
+              </Form.Group> 
+            </Col>
+
           </Row>
 
         </Form>
