@@ -16,6 +16,8 @@ For all questions, comments, or concerns, reach out to [Justus Languell \<jus@ju
 - [X] Implement date selectors in the form.
 - [X] Implement smart dropdowns for status and subteams.
 - [X] Implement an auto ID system.
+- [X] Simple search.
+- [ ] Hide completed.
 - [ ] Add a field and modifier for assignee.
 - [ ] Add a field and control for block/blocks.
 - [X] Make viewable in a GAANT chart.
@@ -35,6 +37,8 @@ For all questions, comments, or concerns, reach out to [Justus Languell \<jus@ju
 - [ ] Message system file uploads.
 - [ ] Message system user mentioning.
 - [ ] Support for editable organizations.
+- [ ] Sort task array.
+- [ ] App priorities.
 
 ## Code
 
