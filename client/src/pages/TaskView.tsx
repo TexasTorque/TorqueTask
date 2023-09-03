@@ -31,7 +31,7 @@ export default ({create}: {create: boolean}) => {
     e.preventDefault();
     console.log(task);
     const res = await updateTask(task);
-    window.location.href = "/task/" + task.identifier;
+    window.location.href = "/";
   }
 
   const handleUpdateField = (e: any) => {
