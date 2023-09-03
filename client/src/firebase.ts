@@ -4,8 +4,8 @@ const PROD_SERVER_ADRESS = "https://torque-task.onrender.com";
 const TEST_SERVER_ADRESS = "http://localhost:3001";
 
 const serverAdresses = {
-  'production': TEST_SERVER_ADRESS,
-  'development': PROD_SERVER_ADRESS,
+  'production': PROD_SERVER_ADRESS,
+  'development': TEST_SERVER_ADRESS,
   'test': TEST_SERVER_ADRESS
 };
 
