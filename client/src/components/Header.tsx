@@ -1,5 +1,6 @@
 import { Button, Col, Container, Form, Nav, NavDropdown, Navbar, Offcanvas, Row } from "react-bootstrap";
 import TorqueLogo from "../imgs/TorqueLogo.png";
+import npmPackage from "../../package.json";
 
 const Header = ({ fluid }: { fluid?: boolean }) => {
 
@@ -18,6 +19,9 @@ const Header = ({ fluid }: { fluid?: boolean }) => {
           <Nav.Item className="nav-btn">
               <Button  variant="success" size="sm" onClick={e => window.location.href = "/new"}>New Task</Button>
           </Nav.Item>
+        </Nav>
+        <Nav>
+          <Navbar.Text>{`version: ${npmPackage.version}`}</Navbar.Text>
         </Nav>
       </Container>
     </Navbar>

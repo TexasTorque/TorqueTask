@@ -47,6 +47,7 @@ export default ({create}: {create: boolean}) => {
       <Header/>
       <Container>
         <Form>
+
           <Row>
             <Col lg={2}>      
               <Form.Group className="mb-3" controlId="taskForm.identifier">
@@ -68,24 +69,14 @@ export default ({create}: {create: boolean}) => {
                     onChange={handleUpdateField} name="project" />
               </Form.Group>
             </Col>
-
             <Col lg={2}>      
-              <Form.Group className="mb-3" controlId="taskForm.project">
+              <Form.Group className="mb-3" controlId="taskForm.updateButton">
                 <Form.Label className="invisible">{"Update task"}</Form.Label>
                 <Button className="w-100" variant="success" size={SIZE} onClick={handleUpdateTask}>Update Task</Button>
               </Form.Group>
             </Col>
           </Row>
-
-          <Row>
-            <Col>
-              <Form.Group className="mb-3" controlId="taskForm.details">
-                <Form.Label>Details</Form.Label>
-                <Form.Control autoComplete="off" size={SIZE} as="textarea"  value={task.details} 
-                    onChange={handleUpdateField} name="details" />
-              </Form.Group> 
-            </Col>
-          </Row>
+        
           <Row>
             <Col lg={3}> 
               <Form.Group className="mb-3" controlId="taskForm.status">
@@ -99,7 +90,6 @@ export default ({create}: {create: boolean}) => {
                 <Form.Label>Subteam</Form.Label>
                 <SelectorDropdown options={Subteam} defaultValue={task.subteam} size={SIZE} 
                     onChange={handleUpdateField} name="subteam" />
-
               </Form.Group> 
             </Col>
             <Col lg={3}> 
@@ -109,7 +99,6 @@ export default ({create}: {create: boolean}) => {
                   onChange={handleUpdateField} name="startDate" />
               </Form.Group> 
             </Col>
-
             <Col lg={3}> 
               <Form.Group className="mb-3" controlId="taskForm.endDate">
                 <Form.Label>End Date</Form.Label>
@@ -117,8 +106,18 @@ export default ({create}: {create: boolean}) => {
                   onChange={handleUpdateField} name="endDate" />
               </Form.Group> 
             </Col>
-
           </Row>
+
+          <Row>
+            <Col>
+              <Form.Group className="mb-3" controlId="taskForm.details">
+                <Form.Label>Details</Form.Label>
+                <Form.Control autoComplete="off" size={SIZE} as="textarea"  value={task.details} 
+                    onChange={handleUpdateField} name="details" />
+              </Form.Group> 
+            </Col>
+          </Row>
+
         </Form>
       </Container>
     </div>
