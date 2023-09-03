@@ -102,3 +102,17 @@ a {
 .npm-version {
   margin-right: 1em;
 }
+
+.not-found {
+  display: flex;
+  justify-content: center;
+}
+
+.not-found-text {
+  position: absolute;
+}
+
+.not-found-text-bottom {
+    position: absolute;
+    bottom: 7em;
+}
