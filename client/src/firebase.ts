@@ -24,7 +24,7 @@ export const updateTask = async (task: Task): Promise<Response> => {
 export const getTaskByID = async (id: string): Promise<Task> => {
   const res = await fetch(api("getTaskByID?id=" + id))
   if (!res.ok) {
-    window.location.href = "/task/new";
+    window.location.href = "/new";
   }
   return res.json() as Promise<Task>;
 }

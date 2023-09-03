@@ -25,13 +25,21 @@ a {
   color: lightskyblue;
 }
 
-.use-market-deco {
+.branding {
   font-family: "Market_Deco";
 }
 
 .header {
   margin-bottom: 1.25rem;
+ 
   padding: 1rem;
+
+}
+
+.nav-btn {
+  margin-top: .85rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 .torque-logo {
