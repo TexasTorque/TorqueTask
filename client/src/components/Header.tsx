@@ -24,6 +24,9 @@ const Header = ({
           <Nav.Link href="/docs">
             <Nav.Link href="/docs">Help</Nav.Link>
           </Nav.Link>
+          <Nav.Link href="https://forms.gle/Q3wFH9zvrjn12z1v6">
+            <Nav.Link href="https://forms.gle/Q3wFH9zvrjn12z1v6"><i>Feature Request</i></Nav.Link>
+          </Nav.Link>
           <Nav.Item className="nav-btn">
             <Button
               variant="success"

@@ -55,10 +55,10 @@ export default () => {
         <Table striped bordered hover variant="dark" size="sm">
           <thead>
             <tr>
-              <th>Task ID</th>
+              <th style={{minWidth: "5rem"}}>Task ID</th>
               <th>Task Name</th>
               <th>Project</th>
-              <th>Details</th>
+              <th style={{maxWidth: "10rem"}}>Details</th>
               <th>Status</th>
               <th>Subteam</th>
               <th>Start Date</th>
