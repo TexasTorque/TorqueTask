@@ -1,6 +1,6 @@
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
-import { Container, Table } from "react-bootstrap";
+import { Card, Col, Container, Form, Row, Table } from "react-bootstrap";
 import { getAllTasks } from "../firebase";
 import { Task } from "../data/Types";
 import SelectorDropdown from "../components/SelectorDropdown";
@@ -40,9 +40,22 @@ const TaskLineItem = ({ task }: { task: Task }) => {
   );
 };
 
+interface SearchQuery {
+  name: string;
+  project: string;
+}
+
 export default () => {
   const [tasks, setTasks] = useState<Task[]>();
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<SearchQuery>({name: "", project: ""});
+  
+  const updateSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e);
+    setSearchQuery({...searchQuery, [e.target.name]: e.target.value});
+  }
+
+  const searchFilter = (task: Task) => task.name.toLowerCase().includes(searchQuery.name.toLowerCase())
+    && task.project.toLowerCase().includes(searchQuery.project.toLowerCase());
 
   useEffect(() => {
     getAllTasks().then(setTasks);
@@ -50,7 +63,31 @@ export default () => {
 
   return (
     <>
-      <Header fluid setSearchQuery={setSearchQuery} />
+      <Header fluid/>
+
+      <Container fluid>
+        <Card className="bg-dark text-white">
+          <Card.Header as="h6">Search Menu</Card.Header>
+          <Card.Body>
+            <Row>
+              <Col sm={2}>      
+                <Form.Group className="mb-3" controlId="search.name">
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control autoComplete="off" size="sm" type="text" onChange={updateSearchQuery} name="name" />
+                </Form.Group>
+              </Col>
+              <Col sm={2}>      
+                <Form.Group className="mb-3" controlId="search.project">
+                  <Form.Label>Project</Form.Label>
+                  <Form.Control autoComplete="off" size="sm" type="text" onChange={updateSearchQuery} name="project" />
+                </Form.Group>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
+
+      </Container>
+      <br></br>
       <Container fluid>
         <Table striped bordered hover variant="dark" size="sm">
           <thead>
@@ -66,13 +103,9 @@ export default () => {
             </tr>
           </thead>
           <tbody>
-            {tasks
-              ?.filter((task) =>
-                task.name.toLowerCase().includes(searchQuery.toLowerCase())
-              )
-              .map((task, id) => {
-                return <TaskLineItem task={task} key={id}></TaskLineItem>;
-              })}
+            {tasks?.filter(searchFilter).map((task, id) => {
+              return <TaskLineItem task={task} key={id}></TaskLineItem>;
+            })}
           </tbody>
         </Table>
       </Container>
