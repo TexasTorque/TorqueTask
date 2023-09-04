@@ -36,6 +36,7 @@ export default ({create}: {create: boolean}) => {
   }
 
   const handleUpdateField = (e: any) => {
+    console.log(e);
     setTask({...task, [e.target.name]: e.target.value});
   }
 

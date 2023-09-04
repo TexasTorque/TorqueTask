@@ -103,7 +103,8 @@ a {
 
 .fixed-header tbody{
   overflow:auto;
-  max-height: 10rem;
+  max-height: 9rem;
+  min-height: 9rem;
   min-width: 100%;
   display: inline-block;
 }
