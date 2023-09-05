@@ -1,13 +1,7 @@
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import npmPackage from "../../package.json";
 
-const Header = ({
-  fluid,
-  setSearchQuery,
-}: {
-  fluid?: boolean;
-  setSearchQuery?: (searchQuery: string) => void;
-}) => {
+const Header = ({fluid}: {fluid?: boolean}) => {
   return (
     <Navbar bg="dark" data-bs-theme="dark" className="header">
       <Container fluid>
@@ -38,21 +32,6 @@ const Header = ({
           </Nav.Item>
         </Nav>
         <Navbar.Text className="npm-version">{`v. ${npmPackage.version}`}</Navbar.Text>
-
-        {typeof setSearchQuery === "function" ? (
-          <div>
-            <input
-              type="text"
-              placeholder="Search"
-              className="form-control"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setSearchQuery(e.target.value)
-              }
-            />
-          </div>
-        ) : (
-          <></>
-        )}
       </Container>
     </Navbar>
   );
