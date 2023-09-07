@@ -1,6 +1,15 @@
 import { Task, defaultTask } from './data/Types'
 
-const api = (x: String): string => "http://localhost:3001/" + x;
+const PROD_SERVER_ADRESS = "https://torque-task.onrender.com";
+const TEST_SERVER_ADRESS = "http://localhost:3001";
+
+const serverAdresses = {
+  'production': PROD_SERVER_ADRESS,
+  'development': TEST_SERVER_ADRESS,
+  'test': TEST_SERVER_ADRESS
+};
+
+const api = (x: String): string => serverAdresses[process.env.NODE_ENV] + "/" + x;
 
 export const getAllTasks = async (): Promise<Task[]> => {
   return (await fetch(api("getAllTasks"))).json() as Promise<Task[]>;

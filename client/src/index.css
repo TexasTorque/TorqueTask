@@ -1,4 +1,6 @@
-.bar-progress { fill: rgb(64, 132, 88) !important; }
+.bar-progress {
+  fill: rgb(64, 132, 88) !important;
+}
 
 .today-highlight {
   fill: red !important;
@@ -16,7 +18,7 @@
 
 .popup {
   width: 5rem;
-  padding: .5rem;
+  padding: 0.5rem;
   height: 2.2rem;
 }
 
@@ -29,7 +31,7 @@
 body {
   /* background-color: black !important; */
   /* background-color: rgb(34, 37, 41); */
-  background-color:rgb(45, 48, 52);
+  background-color: rgb(45, 48, 52);
   padding: 0;
 }
 
@@ -38,8 +40,7 @@ h2,
 h3,
 h4,
 p,
-label
-{
+label {
   color: white !important;
 }
 
@@ -53,13 +54,11 @@ a {
 
 .header {
   margin-bottom: 1.25rem;
- 
   padding: 1rem;
-
 }
 
 .nav-btn {
-  margin-top: .85rem;
+  margin-top: 0.85rem;
   margin-left: 1rem;
   margin-right: 1rem;
 }
@@ -72,7 +71,7 @@ a {
 }
 
 .black-bg {
-  background-color: black; 
+  background-color: black;
 }
 
 .dark-gray-bg {
@@ -86,7 +85,6 @@ a {
 .lite-gray-bg {
   background-color: rgb(45, 48, 52);
 }
-
 
 .dropdown-toggle {
   /* width: 10rem; */
@@ -114,4 +112,22 @@ a {
 
 .string-list-row {
   width: 10rem;
+}
+
+.npm-version {
+  margin-right: 1em;
+}
+
+.not-found {
+  display: flex;
+  justify-content: center;
+}
+
+.not-found-text {
+  position: absolute;
+}
+
+.not-found-text-bottom {
+    position: absolute;
+    bottom: 7em;
 }

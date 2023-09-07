@@ -6,6 +6,7 @@ import TaskTable from "./pages/TaskTable";
 import TaskView from "./pages/TaskView";
 import TaskGantt from "./pages/TaskGantt";
 import UserGuide from "./pages/UserGuide";
+import NotFound from "./pages/NotFound";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -21,6 +22,7 @@ root.render(
         <Route path="/task/:id" element={<TaskView create={false}/>} />
         <Route path="/gantt" element={<TaskGantt />} />
         <Route path="/docs" element={<UserGuide />} />
+        <Route path='*' element={<NotFound />}/>
       </Routes>
     </Router>
   </React.StrictMode>
