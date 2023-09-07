@@ -2,15 +2,16 @@ import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import { Card, Col, Container, Form, Row, Table } from "react-bootstrap";
 import { getAllTasks } from "../firebase";
-import { Task } from "../data/Types";
+import { Status, Subteam, Task } from "../data/Types";
 import SelectorDropdown from "../components/SelectorDropdown";
+import CheckerDropdown, { all } from "../components/CheckerDropdown";
 
 const dateConvert = (s: string): string => {
   const d = new Date(s);
   return "" + d.getMonth() + "/" + d.getDay() + "/" + ("" + d.getFullYear()).substring(2);
 }
 
-const listConvert = (l: string[], m: number): string => {
+export const listConvert = (l: string[], m: number): string => {
   m -= 3;
   if (l.length <= 0) return "";
   const full = l.join(", ");
@@ -59,19 +60,21 @@ const TaskLineItem = ({ task }: { task: Task }) => {
 interface SearchQuery {
   name: string;
   project: string;
+  status: string[];
+  subteam: string[];
 }
 
 export default () => {
   const [tasks, setTasks] = useState<Task[]>();
-  const [searchQuery, setSearchQuery] = useState<SearchQuery>({name: "", project: ""});
+  const [searchQuery, setSearchQuery] = useState<SearchQuery>({name: "", project: "", status: [Status.NOT_STARTED, Status.IN_PROGRESS, Status.BLOCKED], subteam: []});
   
   const updateSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e);
     setSearchQuery({...searchQuery, [e.target.name]: e.target.value});
   }
 
   const searchFilter = (task: Task) => task.name.toLowerCase().includes(searchQuery.name.toLowerCase())
-    && task.project.toLowerCase().includes(searchQuery.project.toLowerCase());
+    && task.project.toLowerCase().includes(searchQuery.project.toLowerCase())
+    && (searchQuery.status.includes(task.status) && searchQuery.subteam.includes(task.subteam));
 
   useEffect(() => {
     getAllTasks().then(setTasks);
@@ -80,7 +83,6 @@ export default () => {
   return (
     <>
       <Header fluid/>
-
       <Container fluid>
         <Card className="bg-dark text-white">
           <Card.Header as="h6">Search Menu</Card.Header>
@@ -98,6 +100,22 @@ export default () => {
                   <Form.Control autoComplete="off" size="sm" type="text" onChange={updateSearchQuery} name="project" />
                 </Form.Group>
               </Col>
+
+            <Col lg={2}> 
+              <Form.Group className="" controlId="taskForm.status">
+                <Form.Label>Status</Form.Label>
+                <CheckerDropdown options={Status} size="sm"  defaults={searchQuery.status}
+                    onChange={updateSearchQuery} name="status"/>
+              </Form.Group> 
+            </Col>
+            <Col lg={2}> 
+              <Form.Group className="" controlId="taskForm.subteam">
+                <Form.Label>Subteam</Form.Label>
+                <CheckerDropdown options={Subteam} size="sm" defaults={all(Subteam)}
+                    onChange={updateSearchQuery} name="subteam" />
+              </Form.Group> 
+            </Col>
+
             </Row>
           </Card.Body>
         </Card>

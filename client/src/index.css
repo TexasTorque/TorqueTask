@@ -16,6 +16,10 @@
   fill: black !important;
 }
 
+.form-check-label {
+  color: black !important;
+}
+
 .popup {
   width: 5rem;
   padding: 0.5rem;
