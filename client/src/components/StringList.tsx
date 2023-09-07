@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Dropdown, DropdownButton, Form, InputGroup, Table } from "react-bootstrap";
 import { Status, Subteam } from "../data/Types";
 import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
@@ -15,13 +15,15 @@ const StringList = ({defaultValue, onChange, name}: {defaultValue: string[], onC
     if (!values.includes(newEntry) && newEntry.trim() !== "")
       setValues([...values, newEntry]);
     setNewEntry("");
-    const v = values;
+  };
+  
+  useEffect(() => {
     onChange({
       target: {
         name: name,
-        value: v
+        value: values
       }});
-  };
+  }, [values]) 
 
   const remove = (e: any) => {
     setValues(values.filter(item => item !== e.target.name));
