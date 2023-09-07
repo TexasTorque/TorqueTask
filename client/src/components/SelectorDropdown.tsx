@@ -9,12 +9,12 @@ export const itemColors = {
   [Status.IN_PROGRESS]: "warning",
   [Status.BLOCKED]: "danger",
   [Status.COMPLETED]: "success",
-  [Subteam.CAD]: "warning",
+  [Subteam.CAD]: "info",
   [Subteam.MANUF]: "secondary",
-  [Subteam.MECH]: "danger",
-  [Subteam.ELEC]: "primary",
-  [Subteam.PROG]: "success",
-  [Subteam.BIZ]: "info"
+  [Subteam.MECH]: "primary",
+  [Subteam.ELEC]: "warning",
+  [Subteam.PROG]: "danger",
+  [Subteam.BIZ]: "success"
 };
 
 const SelectorDropdown = ({options, defaultValue, onChange, disabled, size, name}: 

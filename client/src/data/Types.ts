@@ -23,7 +23,7 @@ export interface Task {
   createdOn: string,
   startDate: string,
   endDate: string,
-  assigness: string[],
+  assignees: string[],
   subteam: Subteam,
 }
 
@@ -40,7 +40,7 @@ export const defaultTask = {
     createdOn: dateToStrISO(today()),
     startDate: dateToStrISO(today()),
     endDate: dateToStrISO(today(60 * 60 * 24 * 1000)),
-    assigness: [],
+    assignees: [],
     subteam: Subteam.PROG,
 };
 
