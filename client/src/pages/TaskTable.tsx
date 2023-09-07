@@ -2,15 +2,16 @@ import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import { Card, Col, Container, Form, Row, Table } from "react-bootstrap";
 import { getAllTasks } from "../firebase";
-import { Task } from "../data/Types";
+import { Status, Subteam, Task } from "../data/Types";
 import SelectorDropdown from "../components/SelectorDropdown";
+import CheckerDropdown, { all } from "../components/CheckerDropdown";
 
 const dateConvert = (s: string): string => {
   const d = new Date(s);
-  return "" + d.getMonth() + "/" + d.getDay() + "/" + ("" + d.getFullYear()).substring(2);
+  return "" + (d.getMonth() + 1) + "/" + d.getDate() + "/" + ("" + d.getFullYear()).substring(2);
 }
 
-const listConvert = (l: string[], m: number): string => {
+export const listConvert = (l: string[], m: number): string => {
   m -= 3;
   if (l.length <= 0) return "";
   const full = l.join(", ");
@@ -29,16 +30,7 @@ const TaskLineItem = ({ task }: { task: Task }) => {
       <td>{task.name}</td>
       <td>{task.project}</td>
       {/* <td>{task.details}</td> */}
-      <td>
-        <SelectorDropdown
-          options={{}}
-          defaultValue={task.status}
-          size="sm"
-          onChange={(_: any) => _}
-          name="subteam"
-          disabled
-        />
-      </td>
+
       <td>
         <SelectorDropdown
           options={{}}
@@ -49,6 +41,18 @@ const TaskLineItem = ({ task }: { task: Task }) => {
           name="subteam"
         />
       </td>
+
+      <td>
+        <SelectorDropdown
+          options={{}}
+          defaultValue={task.status}
+          size="sm"
+          onChange={(_: any) => _}
+          name="subteam"
+          disabled
+        />
+      </td>
+   
       <td>{listConvert(task.assignees ?? [], 25)}</td>
       <td>{dateConvert(task.startDate)}</td>
       <td>{dateConvert(task.endDate)}</td>
@@ -59,19 +63,30 @@ const TaskLineItem = ({ task }: { task: Task }) => {
 interface SearchQuery {
   name: string;
   project: string;
+  status: string[];
+  subteam: string[];
+  assignee: string;
 }
 
 export default () => {
   const [tasks, setTasks] = useState<Task[]>();
-  const [searchQuery, setSearchQuery] = useState<SearchQuery>({name: "", project: ""});
+  const [searchQuery, setSearchQuery] = useState<SearchQuery>({
+    name: "", 
+    project: "", 
+    status: [Status.NOT_STARTED, Status.IN_PROGRESS, Status.BLOCKED], 
+    subteam: all(Subteam),
+    assignee: ""
+  });
   
   const updateSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e);
     setSearchQuery({...searchQuery, [e.target.name]: e.target.value});
-  }
+  };
 
   const searchFilter = (task: Task) => task.name.toLowerCase().includes(searchQuery.name.toLowerCase())
-    && task.project.toLowerCase().includes(searchQuery.project.toLowerCase());
+    && task.project.toLowerCase().includes(searchQuery.project.toLowerCase())
+    && (searchQuery.status.includes(task.status) 
+    && searchQuery.subteam.includes(task.subteam))
+    && (task.assignees ?? []).join("|").toLowerCase().includes(searchQuery.assignee.toLowerCase());
 
   useEffect(() => {
     getAllTasks().then(setTasks);
@@ -80,7 +95,6 @@ export default () => {
   return (
     <>
       <Header fluid/>
-
       <Container fluid>
         <Card className="bg-dark text-white">
           <Card.Header as="h6">Search Menu</Card.Header>
@@ -98,6 +112,26 @@ export default () => {
                   <Form.Control autoComplete="off" size="sm" type="text" onChange={updateSearchQuery} name="project" />
                 </Form.Group>
               </Col>
+              <Col sm={2}> 
+                <Form.Group className="" controlId="search.subteam">
+                  <Form.Label>Subteam</Form.Label>
+                  <CheckerDropdown options={Subteam} size="sm" defaults={searchQuery.subteam}
+                      onChange={updateSearchQuery} name="subteam" />
+                </Form.Group> 
+              </Col>
+              <Col sm={2}> 
+                <Form.Group className="" controlId="search.status">
+                  <Form.Label>Status</Form.Label>
+                  <CheckerDropdown options={Status} size="sm"  defaults={searchQuery.status}
+                      onChange={updateSearchQuery} name="status"/>
+                </Form.Group> 
+              </Col>
+              <Col sm={2}>      
+                <Form.Group className="mb-3" controlId="search.assignee">
+                  <Form.Label>Assignee</Form.Label>
+                  <Form.Control autoComplete="off" size="sm" type="text" onChange={updateSearchQuery} name="assignee" />
+                </Form.Group>
+              </Col>
             </Row>
           </Card.Body>
         </Card>
@@ -112,8 +146,8 @@ export default () => {
               <th>Task Name</th>
               <th>Project</th>
               {/* <th style={{maxWidth: "10rem"}}>Details</th> */}
-              <th>Status</th>
               <th>Subteam</th>
+              <th>Status</th>
               <th>Assignees</th>
               <th>Start</th>
               <th>End</th>
