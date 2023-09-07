@@ -14,17 +14,26 @@ export enum Subteam {
   BIZ = "Business"
 }
 
+export enum Priority {
+  HIGHEST = "↑↑",
+  HIGH = "↑",
+  MID = "―",
+  LOW = "↓",
+  LOWEST = "↓↓"
+}
+
 export interface Task {
-  identifier: string,
-  name: string,
-  project: string,
-  details: string,
-  status: Status,
-  createdOn: string,
-  startDate: string,
-  endDate: string,
-  assignees: string[],
-  subteam: Subteam,
+  identifier: string;
+  name: string;
+  project: string;
+  details: string;
+  status: Status;
+  createdOn: string;
+  startDate: string;
+  endDate: string;
+  assignees: string[];
+  subteam: Subteam;
+  priority: Priority;
 }
 
 export const today = (offset: number = 0): Date => new Date(Date.now() + offset);
@@ -42,9 +51,10 @@ export const defaultTask = {
     endDate: dateToStrISO(today(60 * 60 * 24 * 1000)),
     assignees: [],
     subteam: Subteam.PROG,
+    priority: Priority.MID,
 };
 
 export interface TaskCounter {
-  identifier: string,
-  count: number
+  identifier: string;
+  count: number;
 }

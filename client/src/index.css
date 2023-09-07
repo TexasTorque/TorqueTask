@@ -32,6 +32,10 @@
   font-weight: bold;
 }
 
+div.no-arrow .dropdown-toggle::after {
+  display: none !important; 
+}
+
 body {
   /* background-color: black !important; */
   /* background-color: rgb(34, 37, 41); */

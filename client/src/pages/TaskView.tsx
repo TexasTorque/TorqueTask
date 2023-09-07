@@ -3,7 +3,7 @@ import { Button, Col, Container, Form, FormControlProps, Nav, Navbar, Row, Table
 import TorqueLogo from "../imgs/TorqueLogo.png";
 
 import Header from "../components/Header";
-import { Task, dateFromStrISO, dateToStrISO, defaultTask, Subteam, Status} from "../data/Types";
+import { Task, dateFromStrISO, dateToStrISO, defaultTask, Subteam, Status, Priority} from "../data/Types";
 import { useEffect, useState } from "react";
 import React from "react";
 import SelectorDropdown from "../components/SelectorDropdown";
@@ -62,13 +62,21 @@ export default ({create}: {create: boolean}) => {
                     onChange={e => handleUpdateField(e)} name="name" />
               </Form.Group>
             </Col>
-            <Col lg={4}>      
+            <Col lg={3}>      
               <Form.Group className="mb-3" controlId="taskForm.project">
                 <Form.Label>Project Name</Form.Label>
                 <Form.Control autoComplete="off" size={SIZE} type="text"  value={task.project} 
                     onChange={handleUpdateField} name="project" />
               </Form.Group>
             </Col>
+            <Col lg={1}> 
+              <Form.Group className="mb-3" controlId="taskForm.priority">
+                <Form.Label>Priority</Form.Label>
+                <SelectorDropdown options={Priority} defaultValue={task.priority ?? Priority.MID} size={SIZE} noArrow
+                    onChange={handleUpdateField} name="priority"/>
+              </Form.Group> 
+            </Col>
+
             <Col lg={2}>      
               <Form.Group className="mb-3" controlId="taskForm.updateButton">
                 <Form.Label className="invisible">{"Update task"}</Form.Label>
