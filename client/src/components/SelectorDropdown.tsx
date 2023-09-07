@@ -39,7 +39,7 @@ const SelectorDropdown = ({options, defaultValue, onChange, disabled, size, name
   };
 
   return (
-    <DropdownButton id={name} title={selected} variant={itemColors[selected as Status]} size={size} disabled={disabled ?? false} 
+    <DropdownButton id={name} title={selected} variant={itemColors[selected as Status]} size={size} disabled={disabled ?? false}
         className={(disabled ?? false) || (noArrow ?? false) ? "no-arrow" : ""}>
       {
         Object.values(options).map((v, i) => <Dropdown.Item as="button" name={"" + v} onClick={handle}>{v as string}</Dropdown.Item>)

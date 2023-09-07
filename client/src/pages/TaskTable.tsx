@@ -11,6 +11,7 @@ const dateConvert = (s: string): string => {
   return "" + (d.getMonth() + 1) + "/" + d.getDate() + "/" + ("" + d.getFullYear()).substring(2);
 }
 
+// These need to be components??
 export const listConvert = (l: string[], m: number): string => {
   m -= 3;
   if (l.length <= 0) return "";
@@ -21,6 +22,18 @@ export const listConvert = (l: string[], m: number): string => {
   return part.substring(0, i) + "...";
 }
 
+const selectorLineItem = (v: any): JSX.Element => (
+  <SelectorDropdown
+          options={{}}
+          defaultValue={v}
+          size="sm"
+          onChange={(_: any) => _}
+          disabled
+          name="priority"
+        /> 
+  );
+
+
 const TaskLineItem = ({ task }: { task: Task }) => {
   return (
     <tr>
@@ -29,39 +42,9 @@ const TaskLineItem = ({ task }: { task: Task }) => {
       </td>
       <td>{task.name}</td>
       <td>{task.project}</td>
-      <td>
-        <SelectorDropdown
-          options={{}}
-          defaultValue={task.priority ?? Priority.MID}
-          size="sm"
-          onChange={(_: any) => _}
-          disabled
-          name="priority"
-        />
-      </td>
-
-      <td>
-        <SelectorDropdown
-          options={{}}
-          defaultValue={task.subteam}
-          size="sm"
-          onChange={(_: any) => _}
-          disabled
-          name="subteam"
-        />
-      </td>
-
-      <td>
-        <SelectorDropdown
-          options={{}}
-          defaultValue={task.status}
-          size="sm"
-          onChange={(_: any) => _}
-          name="subteam"
-          disabled
-        />
-      </td>
-   
+      <td>{selectorLineItem(task.priority)}</td>
+      <td>{selectorLineItem(task.subteam)}</td>
+      <td>{selectorLineItem(task.status)}</td>
       <td>{listConvert(task.assignees ?? [], 25)}</td>
       <td>{dateConvert(task.startDate)}</td>
       <td>{dateConvert(task.endDate)}</td>
