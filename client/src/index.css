@@ -101,17 +101,21 @@ a {
 
 .string-list {
   background-color: white;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
 }
 
 .string-list-table {
-  height: 11rem; 
+  height: 9.25rem;
   overflow: scroll;
   display: block;
 }
 
 .string-list-row {
-  width: 10rem;
+}
+
+.string-list-search {
+  margin-bottom: .5em;
+  width: 96%;
 }
 
 .npm-version {
@@ -128,6 +132,35 @@ a {
 }
 
 .not-found-text-bottom {
-    position: absolute;
-    bottom: 7em;
+  position: absolute;
+  bottom: 7em;
+}
+
+.string-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.string-list-cell {
+  display: flex;
+  margin-left: 1em;
+  margin-right: 1em;
+  margin-top: .2em;
+  margin-bottom: .2em;
+}
+
+.form-control:focus {
+  box-shadow: none;
+}
+
+.string-list-add-button {
+  margin: .5em;
+  margin-left: 0em;
+  margin-top: 1em;
+}
+
+.string-list-search-input {
+  margin: 1em;
+  margin-right: 0em;
+  margin-bottom: .5em;
 }
