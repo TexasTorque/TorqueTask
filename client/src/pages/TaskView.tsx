@@ -119,7 +119,7 @@ export default ({create}: {create: boolean}) => {
 
             <Col lg={3}>
               <Form.Group className="mb-3" controlId="taskForm.assignees">
-                <Form.Label>assignees</Form.Label>
+                <Form.Label>Assignees</Form.Label>
                 <StringList defaultValue={task.assignees ?? []} onChange={handleUpdateField} name="assignees"/>
               </Form.Group> 
             </Col>
