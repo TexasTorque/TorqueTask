@@ -5,6 +5,21 @@ import { getAllTasks } from "../firebase";
 import { Task } from "../data/Types";
 import SelectorDropdown from "../components/SelectorDropdown";
 
+const dateConvert = (s: string): string => {
+  const d = new Date(s);
+  return "" + d.getMonth() + "/" + d.getDay() + "/" + ("" + d.getFullYear()).substring(2);
+}
+
+const listConvert = (l: string[], m: number): string => {
+  m -= 3;
+  if (l.length <= 0) return "";
+  const full = l.join(", ");
+  if (full.length <= m) return full;
+  const part = full.substring(0, m + 1);
+  const i = part.lastIndexOf(", ");
+  return part.substring(0, i) + "...";
+}
+
 const TaskLineItem = ({ task }: { task: Task }) => {
   return (
     <tr>
@@ -13,7 +28,7 @@ const TaskLineItem = ({ task }: { task: Task }) => {
       </td>
       <td>{task.name}</td>
       <td>{task.project}</td>
-      <td>{task.details}</td>
+      {/* <td>{task.details}</td> */}
       <td>
         <SelectorDropdown
           options={{}}
@@ -34,8 +49,9 @@ const TaskLineItem = ({ task }: { task: Task }) => {
           name="subteam"
         />
       </td>
-      <td>{task.startDate}</td>
-      <td>{task.endDate}</td>
+      <td>{listConvert(task.assignees ?? [], 25)}</td>
+      <td>{dateConvert(task.startDate)}</td>
+      <td>{dateConvert(task.endDate)}</td>
     </tr>
   );
 };
@@ -95,11 +111,12 @@ export default () => {
               <th style={{minWidth: "5rem"}}>Task ID</th>
               <th>Task Name</th>
               <th>Project</th>
-              <th style={{maxWidth: "10rem"}}>Details</th>
+              {/* <th style={{maxWidth: "10rem"}}>Details</th> */}
               <th>Status</th>
               <th>Subteam</th>
-              <th>Start Date</th>
-              <th>End Date</th>
+              <th>Assignees</th>
+              <th>Start</th>
+              <th>End</th>
             </tr>
           </thead>
           <tbody>
