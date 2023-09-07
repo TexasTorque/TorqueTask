@@ -60,7 +60,7 @@ export default () => {
 
   const formatForGantt = (tasks: Task[]): any[] => {
     var tasksForGantt: any[] = [];
-    setHeight(`${55 * tasks.length + 50}px`);
+    setHeight(`${56 * tasks.length + 50}px`);
     tasks.map(task => {
       tasksForGantt.push({
         id: task.identifier,
