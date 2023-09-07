@@ -1,7 +1,7 @@
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import { Card, Col, Container, Form, Row, Table } from "react-bootstrap";
-import { getAllTasks } from "../firebase";
+import { getAllTasks, updateTask } from "../firebase";
 import { Priority, Status, Subteam, Task } from "../data/Types";
 import SelectorDropdown from "../components/SelectorDropdown";
 import CheckerDropdown, { all } from "../components/CheckerDropdown";
@@ -53,12 +53,15 @@ const TaskLineItem = ({ task }: { task: Task }) => {
 
       <td>
         <SelectorDropdown
-          options={{}}
+          options={{0: Status.NOT_STARTED, 1: Status.IN_PROGRESS, 2: Status.BLOCKED, 3: Status.COMPLETED}}
           defaultValue={task.status}
+          noArrow
           size="sm"
-          onChange={(_: any) => _}
-          name="subteam"
-          disabled
+          onChange={(e: any) => {
+            task.status = e.target.value;
+            updateTask(task);
+          }}
+          name="status"
         />
       </td>
    
