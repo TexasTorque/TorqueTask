@@ -2,7 +2,7 @@ import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import { Card, Col, Container, Form, Row, Table } from "react-bootstrap";
 import { getAllTasks } from "../firebase";
-import { Status, Subteam, Task } from "../data/Types";
+import { Priority, Status, Subteam, Task } from "../data/Types";
 import SelectorDropdown from "../components/SelectorDropdown";
 import CheckerDropdown, { all } from "../components/CheckerDropdown";
 
@@ -29,7 +29,16 @@ const TaskLineItem = ({ task }: { task: Task }) => {
       </td>
       <td>{task.name}</td>
       <td>{task.project}</td>
-      {/* <td>{task.details}</td> */}
+      <td>
+        <SelectorDropdown
+          options={{}}
+          defaultValue={task.priority ?? Priority.MID}
+          size="sm"
+          onChange={(_: any) => _}
+          disabled
+          name="priority"
+        />
+      </td>
 
       <td>
         <SelectorDropdown
@@ -66,6 +75,7 @@ interface SearchQuery {
   status: string[];
   subteam: string[];
   assignee: string;
+  priority: string[];
 }
 
 export default () => {
@@ -75,18 +85,21 @@ export default () => {
     project: "", 
     status: [Status.NOT_STARTED, Status.IN_PROGRESS, Status.BLOCKED], 
     subteam: all(Subteam),
-    assignee: ""
+    assignee: "",
+    priority: all(Priority),
   });
   
   const updateSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery({...searchQuery, [e.target.name]: e.target.value});
   };
 
-  const searchFilter = (task: Task) => task.name.toLowerCase().includes(searchQuery.name.toLowerCase())
+  const searchFilter = (task: Task) => true
+    && task.name.toLowerCase().includes(searchQuery.name.toLowerCase())
     && task.project.toLowerCase().includes(searchQuery.project.toLowerCase())
     && (searchQuery.status.includes(task.status) 
     && searchQuery.subteam.includes(task.subteam))
-    && (task.assignees ?? []).join("|").toLowerCase().includes(searchQuery.assignee.toLowerCase());
+    && (task.assignees ?? []).join("|").toLowerCase().includes(searchQuery.assignee.toLowerCase())
+    && searchQuery.priority.includes(task.priority ?? Priority.MID);
 
   useEffect(() => {
     getAllTasks().then(setTasks);
@@ -106,27 +119,36 @@ export default () => {
                   <Form.Control autoComplete="off" size="sm" type="text" onChange={updateSearchQuery} name="name" />
                 </Form.Group>
               </Col>
-              <Col sm={2}>      
+              <Col sm={1}>      
                 <Form.Group className="mb-3" controlId="search.project">
                   <Form.Label>Project</Form.Label>
                   <Form.Control autoComplete="off" size="sm" type="text" onChange={updateSearchQuery} name="project" />
                 </Form.Group>
               </Col>
-              <Col sm={2}> 
+
+              <Col sm={1}> 
+                <Form.Group className="" controlId="search.priority">
+                  <Form.Label>Priority</Form.Label>
+                  <CheckerDropdown options={Priority} size="sm" defaults={searchQuery.priority}
+                      onChange={updateSearchQuery} name="priority" />
+                </Form.Group> 
+              </Col>
+
+              <Col sm={1}> 
                 <Form.Group className="" controlId="search.subteam">
                   <Form.Label>Subteam</Form.Label>
                   <CheckerDropdown options={Subteam} size="sm" defaults={searchQuery.subteam}
                       onChange={updateSearchQuery} name="subteam" />
                 </Form.Group> 
               </Col>
-              <Col sm={2}> 
+              <Col sm={1}> 
                 <Form.Group className="" controlId="search.status">
                   <Form.Label>Status</Form.Label>
                   <CheckerDropdown options={Status} size="sm"  defaults={searchQuery.status}
                       onChange={updateSearchQuery} name="status"/>
                 </Form.Group> 
               </Col>
-              <Col sm={2}>      
+              <Col sm={1}>      
                 <Form.Group className="mb-3" controlId="search.assignee">
                   <Form.Label>Assignee</Form.Label>
                   <Form.Control autoComplete="off" size="sm" type="text" onChange={updateSearchQuery} name="assignee" />
@@ -145,7 +167,7 @@ export default () => {
               <th style={{minWidth: "5rem"}}>Task ID</th>
               <th>Task Name</th>
               <th>Project</th>
-              {/* <th style={{maxWidth: "10rem"}}>Details</th> */}
+              <th>Priority</th>
               <th>Subteam</th>
               <th>Status</th>
               <th>Assignees</th>
