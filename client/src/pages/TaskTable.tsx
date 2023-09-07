@@ -65,19 +65,28 @@ interface SearchQuery {
   project: string;
   status: string[];
   subteam: string[];
+  assignee: string;
 }
 
 export default () => {
   const [tasks, setTasks] = useState<Task[]>();
-  const [searchQuery, setSearchQuery] = useState<SearchQuery>({name: "", project: "", status: [Status.NOT_STARTED, Status.IN_PROGRESS, Status.BLOCKED], subteam: all(Subteam)});
+  const [searchQuery, setSearchQuery] = useState<SearchQuery>({
+    name: "", 
+    project: "", 
+    status: [Status.NOT_STARTED, Status.IN_PROGRESS, Status.BLOCKED], 
+    subteam: all(Subteam),
+    assignee: ""
+  });
   
   const updateSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery({...searchQuery, [e.target.name]: e.target.value});
-  }
+  };
 
   const searchFilter = (task: Task) => task.name.toLowerCase().includes(searchQuery.name.toLowerCase())
     && task.project.toLowerCase().includes(searchQuery.project.toLowerCase())
-    && (searchQuery.status.includes(task.status) && searchQuery.subteam.includes(task.subteam));
+    && (searchQuery.status.includes(task.status) 
+    && searchQuery.subteam.includes(task.subteam))
+    && (task.assignees ?? []).join("|").toLowerCase().includes(searchQuery.assignee.toLowerCase());
 
   useEffect(() => {
     getAllTasks().then(setTasks);
@@ -103,19 +112,25 @@ export default () => {
                   <Form.Control autoComplete="off" size="sm" type="text" onChange={updateSearchQuery} name="project" />
                 </Form.Group>
               </Col>
-              <Col lg={2}> 
-                <Form.Group className="" controlId="taskForm.subteam">
+              <Col sm={2}> 
+                <Form.Group className="" controlId="search.subteam">
                   <Form.Label>Subteam</Form.Label>
                   <CheckerDropdown options={Subteam} size="sm" defaults={searchQuery.subteam}
                       onChange={updateSearchQuery} name="subteam" />
                 </Form.Group> 
               </Col>
-              <Col lg={2}> 
-                <Form.Group className="" controlId="taskForm.status">
+              <Col sm={2}> 
+                <Form.Group className="" controlId="search.status">
                   <Form.Label>Status</Form.Label>
                   <CheckerDropdown options={Status} size="sm"  defaults={searchQuery.status}
                       onChange={updateSearchQuery} name="status"/>
                 </Form.Group> 
+              </Col>
+              <Col sm={2}>      
+                <Form.Group className="mb-3" controlId="search.assignee">
+                  <Form.Label>Assignee</Form.Label>
+                  <Form.Control autoComplete="off" size="sm" type="text" onChange={updateSearchQuery} name="assignee" />
+                </Form.Group>
               </Col>
             </Row>
           </Card.Body>
