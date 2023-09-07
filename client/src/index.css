@@ -98,26 +98,20 @@ a {
 }
 
 .details-view {
-  height: 12rem;
+  height: 13rem;
 }
 
-.fixed-header tbody{
-  overflow:auto;
-  max-height: 9rem;
-  min-height: 9rem;
-  min-width: 100%;
-  display: inline-block;
+.string-list {
+  background-color: white;
+  border-radius: .5rem;
 }
 
-.fixed-header tbody tr {
-  width: 20rem;
-  height: 2rem;
+.string-list-table {
+  height: 11rem; 
+  overflow: scroll;
+  display: block;
 }
 
-.fixed-header tbody tr td {
-  width: 100rem;
-}
-
-.fixed-header thead tr{
-  display:contents;
+.string-list-row {
+  width: 10rem;
 }
