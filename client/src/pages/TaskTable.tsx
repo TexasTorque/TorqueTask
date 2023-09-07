@@ -30,16 +30,7 @@ const TaskLineItem = ({ task }: { task: Task }) => {
       <td>{task.name}</td>
       <td>{task.project}</td>
       {/* <td>{task.details}</td> */}
-      <td>
-        <SelectorDropdown
-          options={{}}
-          defaultValue={task.status}
-          size="sm"
-          onChange={(_: any) => _}
-          name="subteam"
-          disabled
-        />
-      </td>
+
       <td>
         <SelectorDropdown
           options={{}}
@@ -50,6 +41,18 @@ const TaskLineItem = ({ task }: { task: Task }) => {
           name="subteam"
         />
       </td>
+
+      <td>
+        <SelectorDropdown
+          options={{}}
+          defaultValue={task.status}
+          size="sm"
+          onChange={(_: any) => _}
+          name="subteam"
+          disabled
+        />
+      </td>
+   
       <td>{listConvert(task.assignees ?? [], 25)}</td>
       <td>{dateConvert(task.startDate)}</td>
       <td>{dateConvert(task.endDate)}</td>
@@ -66,7 +69,7 @@ interface SearchQuery {
 
 export default () => {
   const [tasks, setTasks] = useState<Task[]>();
-  const [searchQuery, setSearchQuery] = useState<SearchQuery>({name: "", project: "", status: [Status.NOT_STARTED, Status.IN_PROGRESS, Status.BLOCKED], subteam: []});
+  const [searchQuery, setSearchQuery] = useState<SearchQuery>({name: "", project: "", status: [Status.NOT_STARTED, Status.IN_PROGRESS, Status.BLOCKED], subteam: all(Subteam)});
   
   const updateSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery({...searchQuery, [e.target.name]: e.target.value});
@@ -100,22 +103,20 @@ export default () => {
                   <Form.Control autoComplete="off" size="sm" type="text" onChange={updateSearchQuery} name="project" />
                 </Form.Group>
               </Col>
-
-            <Col lg={2}> 
-              <Form.Group className="" controlId="taskForm.status">
-                <Form.Label>Status</Form.Label>
-                <CheckerDropdown options={Status} size="sm"  defaults={searchQuery.status}
-                    onChange={updateSearchQuery} name="status"/>
-              </Form.Group> 
-            </Col>
-            <Col lg={2}> 
-              <Form.Group className="" controlId="taskForm.subteam">
-                <Form.Label>Subteam</Form.Label>
-                <CheckerDropdown options={Subteam} size="sm" defaults={all(Subteam)}
-                    onChange={updateSearchQuery} name="subteam" />
-              </Form.Group> 
-            </Col>
-
+              <Col lg={2}> 
+                <Form.Group className="" controlId="taskForm.subteam">
+                  <Form.Label>Subteam</Form.Label>
+                  <CheckerDropdown options={Subteam} size="sm" defaults={searchQuery.subteam}
+                      onChange={updateSearchQuery} name="subteam" />
+                </Form.Group> 
+              </Col>
+              <Col lg={2}> 
+                <Form.Group className="" controlId="taskForm.status">
+                  <Form.Label>Status</Form.Label>
+                  <CheckerDropdown options={Status} size="sm"  defaults={searchQuery.status}
+                      onChange={updateSearchQuery} name="status"/>
+                </Form.Group> 
+              </Col>
             </Row>
           </Card.Body>
         </Card>
@@ -130,8 +131,8 @@ export default () => {
               <th>Task Name</th>
               <th>Project</th>
               {/* <th style={{maxWidth: "10rem"}}>Details</th> */}
-              <th>Status</th>
               <th>Subteam</th>
+              <th>Status</th>
               <th>Assignees</th>
               <th>Start</th>
               <th>End</th>
