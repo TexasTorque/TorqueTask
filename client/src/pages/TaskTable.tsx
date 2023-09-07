@@ -8,7 +8,7 @@ import CheckerDropdown, { all } from "../components/CheckerDropdown";
 
 const dateConvert = (s: string): string => {
   const d = new Date(s);
-  return "" + d.getMonth() + 1 + "/" + d.getDate() + "/" + ("" + d.getFullYear()).substring(2);
+  return "" + (d.getMonth() + 1) + "/" + d.getDate() + "/" + ("" + d.getFullYear()).substring(2);
 }
 
 export const listConvert = (l: string[], m: number): string => {
