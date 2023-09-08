@@ -1,7 +1,7 @@
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import { Card, Col, Container, Form, Row, Table } from "react-bootstrap";
-import { getAllTasks } from "../firebase";
+import { getAllTasks, updateTask } from "../firebase";
 import { Priority, Status, Subteam, Task } from "../data/Types";
 import SelectorDropdown from "../components/SelectorDropdown";
 import CheckerDropdown, { all } from "../components/CheckerDropdown";
@@ -21,54 +21,6 @@ export const listConvert = (l: string[], m: number): string => {
   return part.substring(0, i) + "...";
 }
 
-const TaskLineItem = ({ task }: { task: Task }) => {
-  return (
-    <tr>
-      <td>
-        <a href={"/task/" + task.identifier}>{task.identifier}</a>
-      </td>
-      <td>{task.name}</td>
-      <td>{task.project}</td>
-      <td>
-        <SelectorDropdown
-          options={{}}
-          defaultValue={task.priority ?? Priority.MID}
-          size="sm"
-          onChange={(_: any) => _}
-          disabled
-          name="priority"
-        />
-      </td>
-
-      <td>
-        <SelectorDropdown
-          options={{}}
-          defaultValue={task.subteam}
-          size="sm"
-          onChange={(_: any) => _}
-          disabled
-          name="subteam"
-        />
-      </td>
-
-      <td>
-        <SelectorDropdown
-          options={{}}
-          defaultValue={task.status}
-          size="sm"
-          onChange={(_: any) => _}
-          name="subteam"
-          disabled
-        />
-      </td>
-   
-      <td>{listConvert(task.assignees ?? [], 25)}</td>
-      <td>{dateConvert(task.startDate)}</td>
-      <td>{dateConvert(task.endDate)}</td>
-    </tr>
-  );
-};
-
 interface SearchQuery {
   name: string;
   project: string;
@@ -80,6 +32,7 @@ interface SearchQuery {
 
 export default () => {
   const [tasks, setTasks] = useState<Task[]>();
+
   const [searchQuery, setSearchQuery] = useState<SearchQuery>({
     name: "", 
     project: "", 
@@ -88,7 +41,7 @@ export default () => {
     assignee: "",
     priority: all(Priority),
   });
-  
+
   const updateSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery({...searchQuery, [e.target.name]: e.target.value});
   };
@@ -101,9 +54,76 @@ export default () => {
     && (task.assignees ?? []).join("|").toLowerCase().includes(searchQuery.assignee.toLowerCase())
     && searchQuery.priority.includes(task.priority ?? Priority.MID);
 
-  useEffect(() => {
-    getAllTasks().then(setTasks);
-  }, [setTasks]);
+  useEffect(() => populateTable(), [setTasks]);
+    
+  const populateTable = () => { getAllTasks().then(setTasks) };
+
+  const [lines, setLines] = useState<JSX.Element[]>([]);
+
+  useEffect(() =>  updateTable() , [tasks]);
+  useEffect(() =>  updateTable() , [searchQuery]);
+
+  const updateTable = () => setLines((tasks ?? []).filter(searchFilter).map((task, id) => {
+    return <TaskLineItem task={task} key={id}></TaskLineItem>;
+  }));
+
+  const replaceTask = (task: Task) => {
+    setTasks([
+      ...(tasks ?? []).filter((t: Task) => t.identifier != task.identifier), task
+    ]);
+  }
+
+  const TaskLineItem = ({ task }: { task: Task }) => {
+    return (
+      <tr>
+        <td>
+          <a href={"/task/" + task.identifier}>{task.identifier}</a>
+        </td>
+        <td>{task.name}</td>
+        <td>{task.project}</td>
+        <td>
+          <SelectorDropdown
+            options={{}}
+            defaultValue={task.priority ?? Priority.MID}
+            size="sm"
+            onChange={(_: any) => _}
+            disabled
+            name="priority"
+          />
+        </td>
+        <td>
+          <SelectorDropdown
+            options={{}}
+            defaultValue={task.subteam}
+            size="sm"
+            onChange={(_: any) => _}
+            disabled
+            name="subteam"
+          />
+        </td>
+        <td>
+          <SelectorDropdown
+            options={{0: Status.NOT_STARTED, 1: Status.IN_PROGRESS, 2: Status.BLOCKED, 3: Status.COMPLETED}}
+            defaultValue={task.status}
+            noArrow
+            size="sm"
+            onChange={(e: any) => {
+              task.status = e.target.value;
+              updateTask(task);
+              replaceTask(task);
+              // populateTable();
+            }}
+            name="status"
+          />
+        </td>
+    
+        <td>{listConvert(task.assignees ?? [], 25)}</td>
+        <td>{dateConvert(task.startDate)}</td>
+        <td>{dateConvert(task.endDate)}</td>
+      </tr>
+    );
+  };
+
 
   return (
     <>
@@ -175,10 +195,7 @@ export default () => {
               <th>End</th>
             </tr>
           </thead>
-          <tbody>
-            {tasks?.filter(searchFilter).map((task, id) => {
-              return <TaskLineItem task={task} key={id}></TaskLineItem>;
-            })}
+          <tbody>{lines}
           </tbody>
         </Table>
       </Container>
