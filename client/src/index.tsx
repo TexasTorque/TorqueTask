@@ -8,6 +8,10 @@ import TaskGantt from "./pages/TaskGantt";
 import UserGuide from "./pages/UserGuide";
 import NotFound from "./pages/NotFound";
 
+export const setMetaDesc = (s: string) => {
+  (document.getElementById("preview") as any).content = s;
+}
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

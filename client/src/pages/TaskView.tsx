@@ -10,6 +10,7 @@ import SelectorDropdown from "../components/SelectorDropdown";
 import { getNextIdentifier, getTaskByID, updateTask } from "../firebase";
 import { useParams } from "react-router-dom";
 import StringList from "../components/StringList";
+import { setMetaDesc } from "..";
 
 export default ({create}: {create: boolean}) => {
 
@@ -28,9 +29,12 @@ export default ({create}: {create: boolean}) => {
     }
   }, [setTask, setLoaded]);
 
+  useEffect(() => {
+    setMetaDesc(create ? "Create new task." : `${task.project}: ${task.name}.`);
+  }, [task]);
+
   const handleUpdateTask = async (e: any) => {
     e.preventDefault();
-    console.log(task.assignees);
     const res = await updateTask(task);
     window.location.href = "/";
   }
