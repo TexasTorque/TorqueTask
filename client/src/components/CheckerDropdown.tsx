@@ -27,7 +27,8 @@ const CheckerDropdown = ({ options, onChange, disabled, size, name, defaults, va
     onChange({
       target: {
         name: name,
-        value: selected.length <= 0 ? all(options) : selected
+        // value: selected.length <= 0 ? all(options) : selected
+        value: selected.length <= 0 ? [] : selected
       },
     });
   }, [selected]);
