@@ -33,7 +33,7 @@
 }
 
 div.no-arrow .dropdown-toggle::after {
-  display: none !important; 
+  display: none !important;
 }
 
 body {
@@ -47,7 +47,8 @@ h1,
 h2,
 h3,
 h4,
-h5, h6,
+h5,
+h6,
 p,
 label {
   color: white !important;
@@ -123,7 +124,7 @@ a {
 }
 
 .string-list-search {
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
   width: 96%;
 }
 
@@ -154,8 +155,8 @@ a {
   display: flex;
   margin-left: 1em;
   margin-right: 1em;
-  margin-top: .2em;
-  margin-bottom: .2em;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
 }
 
 .form-control:focus {
@@ -163,7 +164,7 @@ a {
 }
 
 .string-list-add-button {
-  margin: .5em;
+  margin: 0.5em;
   margin-left: 0em;
   margin-top: 1em;
 }
@@ -171,5 +172,13 @@ a {
 .string-list-search-input {
   margin: 1em;
   margin-right: 0em;
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
 }
+
+.task-row-name-input {
+  background: none;
+  color: white;
+  border: none;
+  width: 100%;
+}
+
