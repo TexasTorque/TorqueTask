@@ -9,7 +9,9 @@ import UserGuide from "./pages/UserGuide";
 import NotFound from "./pages/NotFound";
 
 export const setMetaDesc = (s: string) => {
-  (document.getElementById("preview") as any).content = s;
+  // (document.getElementById("preview") as any).content = s;
+  (document.getElementById("preview-title") as any).content = s;
+  (document.getElementById("preview-desc") as any).content = s;
 }
 
 const root = ReactDOM.createRoot(
