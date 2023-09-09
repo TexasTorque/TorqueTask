@@ -13,7 +13,6 @@ export interface SearchQuery {
   priority: string[];
 }
 
-// export const createSearchFilter = (searchQuery: SearchQuery) => (
 export const createSearchFilter = (search: Search) => {
   const searchQuery = search[0];
   return (task: Task) => (task.name.toLowerCase().includes(searchQuery.name.toLowerCase())
@@ -24,16 +23,10 @@ export const createSearchFilter = (search: Search) => {
     && searchQuery.priority.includes(task.priority ?? Priority.MID));
 };
 
-// const SearchMenu = ({searchQuery, setSearchQuery}: 
-  // {searchQuery: SearchQuery, setSearchQuery: React.Dispatch<React.SetStateAction<SearchQuery>>}) => {
-
 type SearchSetter = React.Dispatch<React.SetStateAction<SearchQuery>>;
 type Search = [SearchQuery, SearchSetter];
 
-// export const useSearch = (): [SearchQuery, [SearchQuery, SearchSetter]] => {
-// export const useSearch = (): Search => (useState<SearchQuery>({
 export const useSearch = (update?: Function): Search => {
-
   const search = useState<SearchQuery>({
       name: "", 
       project: "", 

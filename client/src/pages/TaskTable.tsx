@@ -97,7 +97,6 @@ export default () => {
   return (
     <>
       <Header fluid/>
-      {/* <SearchMenu searchQuery={searchQuery} setSearchQuery={setSearchQuery}/> */}
       <SearchMenu search={search}/>
       <br></br>
       <Container fluid>
