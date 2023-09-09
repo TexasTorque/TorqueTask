@@ -5,6 +5,7 @@ import { getAllTasks, updateTask } from "../firebase";
 import { Priority, Status, Subteam, Task } from "../data/Types";
 import SelectorDropdown from "../components/SelectorDropdown";
 import CheckerDropdown, { all } from "../components/CheckerDropdown";
+import SearchMenu, { SearchQuery, createSearchFilter, useSearch } from "../components/SearchMenu";
 
 const dateConvert = (s: string): string => {
   const d = new Date(s);
@@ -21,57 +22,25 @@ export const listConvert = (l: string[], m: number): string => {
   return part.substring(0, i) + "...";
 }
 
-interface SearchQuery {
-  name: string;
-  project: string;
-  status: string[];
-  subteam: string[];
-  assignee: string;
-  priority: string[];
-}
-
 export default () => {
   const [tasks, setTasks] = useState<Task[]>();
-
-  const [searchQuery, setSearchQuery] = useState<SearchQuery>({
-    name: "", 
-    project: "", 
-    status: [Status.NOT_STARTED, Status.IN_PROGRESS, Status.BLOCKED], 
-    subteam: all(Subteam),
-    assignee: "",
-    priority: all(Priority),
-  });
-
-  const updateSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery({...searchQuery, [e.target.name]: e.target.value});
-  };
-
-  const searchFilter = (task: Task) => true
-    && task.name.toLowerCase().includes(searchQuery.name.toLowerCase())
-    && task.project.toLowerCase().includes(searchQuery.project.toLowerCase())
-    && (searchQuery.status.includes(task.status) 
-    && searchQuery.subteam.includes(task.subteam))
-    && (task.assignees ?? []).join("|").toLowerCase().includes(searchQuery.assignee.toLowerCase())
-    && searchQuery.priority.includes(task.priority ?? Priority.MID);
-
-  useEffect(() => populateTable(), [setTasks]);
-    
+  
   const populateTable = () => { getAllTasks().then(setTasks) };
+  useEffect(() => populateTable(), [setTasks]);
 
   const [lines, setLines] = useState<JSX.Element[]>([]);
 
-  useEffect(() =>  updateTable() , [tasks]);
-  useEffect(() =>  updateTable() , [searchQuery]);
+  const updateTable = () => setLines((tasks ?? []).filter(createSearchFilter(search)).map(
+    (task, id) => <TaskLineItem task={task} key={id}></TaskLineItem>
+  ));
 
-  const updateTable = () => setLines((tasks ?? []).filter(searchFilter).map((task, id) => {
-    return <TaskLineItem task={task} key={id}></TaskLineItem>;
-  }));
+  const search = useSearch(updateTable);
 
-  const replaceTask = (task: Task) => {
-    setTasks([
-      ...(tasks ?? []).filter((t: Task) => t.identifier != task.identifier), task
-    ]);
-  }
+  useEffect(() => updateTable(), [tasks]);
+
+  const replaceTask = (task: Task) => setTasks([
+    ...(tasks ?? []).filter((t: Task) => t.identifier != task.identifier), task
+  ]);
 
   const TaskLineItem = ({ task }: { task: Task }) => {
     return (
@@ -128,57 +97,7 @@ export default () => {
   return (
     <>
       <Header fluid/>
-      <Container fluid>
-        <Card className="bg-dark text-white">
-          <Card.Header as="h6">Search Menu</Card.Header>
-          <Card.Body>
-            <Row>
-              <Col sm={2}>      
-                <Form.Group className="mb-3" controlId="search.name">
-                  <Form.Label>Name</Form.Label>
-                  <Form.Control autoComplete="off" size="sm" type="text" onChange={updateSearchQuery} name="name" />
-                </Form.Group>
-              </Col>
-              <Col sm={1}>      
-                <Form.Group className="mb-3" controlId="search.project">
-                  <Form.Label>Project</Form.Label>
-                  <Form.Control autoComplete="off" size="sm" type="text" onChange={updateSearchQuery} name="project" />
-                </Form.Group>
-              </Col>
-
-              <Col sm={1}> 
-                <Form.Group className="" controlId="search.priority">
-                  <Form.Label>Priority</Form.Label>
-                  <CheckerDropdown options={Priority} size="sm" defaults={searchQuery.priority}
-                      onChange={updateSearchQuery} name="priority" />
-                </Form.Group> 
-              </Col>
-
-              <Col sm={1}> 
-                <Form.Group className="" controlId="search.subteam">
-                  <Form.Label>Subteam</Form.Label>
-                  <CheckerDropdown options={Subteam} size="sm" defaults={searchQuery.subteam}
-                      onChange={updateSearchQuery} name="subteam" />
-                </Form.Group> 
-              </Col>
-              <Col sm={1}> 
-                <Form.Group className="" controlId="search.status">
-                  <Form.Label>Status</Form.Label>
-                  <CheckerDropdown options={Status} size="sm"  defaults={searchQuery.status}
-                      onChange={updateSearchQuery} name="status"/>
-                </Form.Group> 
-              </Col>
-              <Col sm={1}>      
-                <Form.Group className="mb-3" controlId="search.assignee">
-                  <Form.Label>Assignee</Form.Label>
-                  <Form.Control autoComplete="off" size="sm" type="text" onChange={updateSearchQuery} name="assignee" />
-                </Form.Group>
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
-
-      </Container>
+      <SearchMenu search={search}/>
       <br></br>
       <Container fluid>
         <Table striped bordered hover variant="dark" size="sm">

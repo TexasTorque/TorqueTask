@@ -10,6 +10,7 @@ import { Status, Subteam, Task } from "../data/Types";
 import SelectorDropdown from "../components/SelectorDropdown";
 
 import Gantt from "frappe-gantt";
+import SearchMenu, { createSearchFilter, useSearch } from "../components/SearchMenu";
 
 export default () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -22,8 +23,17 @@ export default () => {
   useEffect(() => {
     getAllTasks().then(tasks => {
       setTasks(tasks);
-      
-      var gantt = new Gantt("#gantt", formatForGantt(tasks), {
+    });
+  }, [setTasks]);
+
+  useEffect(() => renderGantt(), [tasks]);
+
+  const renderGantt = () => {
+    const t = tasks.filter(createSearchFilter(search));
+    setHeight(`${56 * Math.max(t.length, 1) + 50}px`);
+    new Gantt("#gantt", t.length <= 0 ? [{
+      name: "&nbsp;&nbsp;&nbsp;No tasks to display.",
+    }] : formatForGantt(t), {
         header_height: 45,
         step: 2,
         bar_height: 40,
@@ -37,8 +47,7 @@ export default () => {
         custom_popup_html: t => `<div class="popup"><p>${t.id}</p></div>`,
         on_click: t => window.location.href = "/task/" + t.id,
       });
-    });
-  }, [setTasks]);
+  }
 
   const progressLevels = {
     [Status.NOT_STARTED]: 5,
@@ -58,9 +67,10 @@ export default () => {
     return (n - o - s) / (e - s) * 100;
   }
 
+  const search = useSearch(renderGantt);
+
   const formatForGantt = (tasks: Task[]): any[] => {
     var tasksForGantt: any[] = [];
-    setHeight(`${56 * tasks.length + 50}px`);
     tasks.map(task => {
       tasksForGantt.push({
         id: task.identifier,
@@ -77,9 +87,14 @@ export default () => {
   return (
     <>
       <Header fluid/>
+      <SearchMenu search={search}/>
+      <br></br>
       <Container fluid>
-        <p>Double click on a cell to go to that tasks. We are already working on an improved GANTT chart system.</p>
         <svg style={{height: height}} id="gantt"></svg>
+      </Container>
+      <br></br>
+      <Container fluid>
+        <p><b>Tip:</b> Double click on a cell to go to that tasks. </p>
       </Container>
     </>
   );
