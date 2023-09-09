@@ -172,3 +172,16 @@ a {
   margin-right: 0em;
   margin-bottom: .5em;
 }
+
+.sort-btn {
+  height: 1.25rem;
+  padding: 0rem;
+  padding-bottom: .5rem;
+  padding-left: .2rem;
+  padding-right: .2rem;
+  margin-bottom: .15rem;
+}
+
+.col-head {
+  width: fit-content;
+}
