@@ -29,6 +29,7 @@ export default () => {
   useEffect(() => renderGantt(), [tasks]);
 
   const renderGantt = () => {
+    console.log("hi");
     const t = tasks.filter(createSearchFilter(search));
     setHeight(`${56 * Math.max(t.length, 1) + 50}px`);
     new Gantt("#gantt", t.length <= 0 ? [{
@@ -43,7 +44,7 @@ export default () => {
         view_mode: 'Day',
         date_format: 'MM/DD/YYYY',
         language: 'en',
-        on_date_change: t => t.progress= 100,
+        on_date_change:undefined,
         custom_popup_html: t => `<div class="popup"><p>${t.id}</p></div>`,
         on_click: t => window.location.href = "/task/" + t.id,
       });
@@ -69,11 +70,15 @@ export default () => {
 
   const search = useSearch(renderGantt);
 
+  const sortFunction = (a: Task, b: Task): number => {
+      return (new Date(a.startDate)).getTime() - (new Date(b.startDate)).getTime();
+  }
+
   const formatForGantt = (tasks: Task[]): any[] => {
     var tasksForGantt: any[] = [];
     tasks.map(task => {
       tasksForGantt.push({
-        id: task.identifier,
+        id: task.identifier ?? "",
         name: task.name,
         start: task.startDate,
         end: task.endDate,
