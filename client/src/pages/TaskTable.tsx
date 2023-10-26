@@ -130,7 +130,7 @@ export default () => {
 
         <td>{listConvert(task.assignees ?? [], 25)}</td>
         <td>{dateConvert(task.startDate)}</td>
-        <td>{dateConvert(task.endDate)}</td>
+        <td style={{color: new Date(task.endDate) < new Date() ? "#FF726B" : "#FFFFFF"}}>{dateConvert(task.endDate)}</td>
       </tr>
     );
   };
