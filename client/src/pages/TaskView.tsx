@@ -30,7 +30,6 @@ export default ({create}: {create: boolean}) => {
 
   const handleUpdateTask = async (e: any) => {
     e.preventDefault();
-    console.log(task.assignees);
     const res = await updateTask(task);
     window.location.href = "/";
   }

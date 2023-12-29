@@ -49,16 +49,17 @@ export default () => {
       });
   }
 
-  const progressLevels = {
-    [Status.NOT_STARTED]: 5,
-    [Status.IN_PROGRESS]: -1,
-    [Status.BLOCKED]: 0,
-    [Status.COMPLETED]: 100,
-  }
+  // const progressLevels = {
+  //   [Status.NOT_STARTED]: 5,
+  //   [Status.IN_PROGRESS]: -1,
+  //   [Status.BLOCKED]: 0,
+  //   [Status.COMPLETED]: 100,
+  // }
 
   const calcProgressBar = (t: Task): number => {
-    const p = progressLevels[t.status];
-    if (p != -1) return p;
+    // const p = progressLevels[t.status];
+    // if (p != -1) return p;
+    const p = 100;
 
     const s = new Date(t.startDate).getTime();
     const e = new Date(t.endDate).getTime();

@@ -5,9 +5,10 @@ import { Priority, Status, Subteam } from "../data/Types";
 type Size = "sm" | "lg" | undefined;
 
 export const itemColors = {
+  [Status.CANCELED]: "danger",
   [Status.NOT_STARTED]: "secondary",
-  [Status.IN_PROGRESS]: "warning",
-  [Status.BLOCKED]: "danger",
+  [Status.IN_PROGRESS]: "info",
+  [Status.BLOCKED]: "warning",
   [Status.COMPLETED]: "success",
 
   [Subteam.CAD]: "info",

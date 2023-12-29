@@ -9,6 +9,9 @@ For all questions, comments, or concerns, reach out to [Justus Languell \<jus@ju
 
 ## Features/TODO
 
+- [ ] Make the first row editable to add fields quickly (like Monday).
+- [ ] Make an improved GAANT chart.
+- [ ] Add a field and control for block/blocks.
 - [X] Basic fields: ID, name, project, details, start/end date, status, subteam.
 - [X] View tasks in a table.
 - [X] Create new tasks.
@@ -17,27 +20,18 @@ For all questions, comments, or concerns, reach out to [Justus Languell \<jus@ju
 - [X] Implement smart dropdowns for status and subteams.
 - [X] Implement an auto ID system.
 - [X] Simple search.
-- [ ] Hide completed.
-- [ ] Add a field and modifier for assignee.
-- [ ] Add a field and control for block/blocks.
+- [X] Hide completed.
+- [X] Add a field and modifier for assignee.
 - [X] Make viewable in a GAANT chart.
-- [ ] Make an improved GAANT chart.
-- [ ] Dark and light mode.
-- [ ] About, user instructions, and help page.
-- [ ] More advanced data validation.
-- [ ] Make the header look good.
-- [ ] Implement a query system.
-- [ ] Make the first row editable to add fields quickly (like Monday).
+- [X] Make the header look good.
+- [X] Implement a query system.
 - [ ] Implement a message system for each task (like Jira.)
-- [ ] Add a user system.
-- [ ] Create a CI/CD system.
-- [ ] Create a graph view that shows tasks and their relation to eachother.
 - [ ] Implement notifications.
 - [ ] Convert projects to a smart dropdown where the user can add fields.
 - [ ] Message system file uploads.
 - [ ] Message system user mentioning.
 - [ ] Support for editable organizations.
-- [ ] Sort task array.
+- [X] Sort task array.
 - [ ] App priorities.
 
 ## Code
