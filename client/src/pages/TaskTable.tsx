@@ -8,6 +8,7 @@ import CheckerDropdown, { all } from "../components/CheckerDropdown";
 import SearchMenu, { SearchQuery, createSearchFilter, useSearch } from "../components/SearchMenu";
 import { useTaskState } from "./TaskView";
 import { useBeforeUnload } from "react-router-dom";
+import EditableTableTextEntry, { stringConstrain } from "../components/EditableTextEntry";
 
 const dateConvert = (s: string): string => {
   const d = new Date(s);
@@ -24,12 +25,7 @@ export const listConvert = (l: string[], m: number): string => {
   return part.substring(0, i) + "...";
 }
 
-export const stringConstrain = (s: string, l: number): string => {
-  if (s.length < l) return s;
-  const words: string[] = s.substring(0, l).split(" ");
-  words.pop();
-  return words.join(" ") + "...";
-}
+
 
 export default () => {
   const [tasks, setTasks] = useState<Task[]>();
@@ -42,7 +38,7 @@ export default () => {
   const [lines, setLines] = useState<JSX.Element[]>([]);
 
 
-  const [sort, setSort] = useState<string>("identifier");
+  const [sort, setSort] = useState<string>("endDate");
   const [backwards, setBackwards] = useState<boolean>(false);
 
   const idInt = (t: Task): number => parseInt(t.identifier.replace("TORQ-", ""));
@@ -58,7 +54,7 @@ export default () => {
   const priorityLevel = (p: Priority) => priorityLevels[p ?? Priority.MID];
 
   const sortFunction = (a: Task, b: Task): number => {
-    if (sort == "identifier")
+    if (sort == "")
       return idInt(a) - idInt(b);
     const av = a[sort as keyof Task];
     const bv = b[sort as keyof Task];
@@ -99,6 +95,7 @@ export default () => {
 
     useEffect(() => {
       if (modified) {
+        console.log(task);
         if (timeoutHandle !== undefined) {
           clearTimeout(timeoutHandle);
         }
@@ -117,17 +114,31 @@ export default () => {
     return (
       <tr>
         <td>
-          <a href={"/task/" + task.identifier}>{task.identifier}</a>
+          <a className="text-tbl-entry" href={"/task/" + task.identifier}>{task.identifier}</a>
         </td>
-        <td>{stringConstrain(task.name, 50)}</td>
-        <td>{stringConstrain(task.project, 25)}</td>
+
+        <EditableTableTextEntry
+          defaultValue={task.name ?? ""}
+          size="sm"
+          onChange={handleUpdateField}
+          name="name"
+          length={40}
+        />
+        
+        <EditableTableTextEntry
+          defaultValue={task.project ?? ""}
+          size="sm"
+          onChange={handleUpdateField}
+          name="project"
+          length={25}
+        />
+
         <td>
           <SelectorDropdown
             options={Priority}
             defaultValue={task.priority ?? Priority.MID}
             size="sm"
             onChange={handleUpdateField}
-            // disabled
             name="priority"
             noArrow
           />
@@ -138,7 +149,6 @@ export default () => {
             defaultValue={task.subteam}
             size="sm"
             onChange={handleUpdateField}
-            // disabled
             name="subteam"
             noArrow
           />
@@ -148,18 +158,13 @@ export default () => {
             options={Status}
             defaultValue={task.status}
             size="sm"
-            // onChange={(e: any) => {
-            //   task.status = e.target.value;
-            //   updateTask(task);
-            //   replaceTask(task);
-            // }}
             onChange={handleUpdateField}
             name="status"
             noArrow
           />
         </td>
 
-        <td>{listConvert(task.assignees ?? [], 25)}</td>
+        <td className="text-tbl-entry">{listConvert(task.assignees ?? [], 25)}</td>
         {/* <td>{dateConvert(task.startDate)}</td> */}
         {/* <td style={{color: new Date(task.endDate) < new Date() ? "#FF726B" : "#FFFFFF"}}>{dateConvert(task.endDate)}</td> */}
         <td className="date-col"><Form.Control autoComplete="off" size="sm" type="date" value={task.startDate}
@@ -187,8 +192,8 @@ export default () => {
 
   const ColHead = ({ name, field, width }: { name: string, field: string, width?: string }) => (
     <th style={{width: width}} className="col-head">
-      {name} &nbsp; &nbsp;
-      <Button variant={sortColor(field)} size="sm" className="sort-btn" onClick={updateSortField} name={field}>{sortSymbol(field)}</Button>
+      <span className="flt-left">{name}</span>
+      <Button variant={sortColor(field)} size="sm" className="sort-btn flt-right" onClick={updateSortField} name={field}>{sortSymbol(field)}</Button>
     </th>
     );
 
