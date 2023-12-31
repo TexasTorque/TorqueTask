@@ -114,7 +114,7 @@ export default () => {
         </td>
         <td>
           <SelectorDropdown
-            options={{ 0: Status.NOT_STARTED, 1: Status.IN_PROGRESS, 2: Status.BLOCKED, 3: Status.COMPLETED }}
+            options={Status}
             defaultValue={task.status}
             noArrow
             size="sm"
