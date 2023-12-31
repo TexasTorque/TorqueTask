@@ -4,18 +4,27 @@ import TorqueLogo from "../imgs/TorqueLogo.png";
 
 import Header from "../components/Header";
 import { Task, dateFromStrISO, dateToStrISO, defaultTask, Subteam, Status, Priority} from "../data/Types";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import React from "react";
 import SelectorDropdown from "../components/SelectorDropdown";
 import { getNextIdentifier, getTaskByID, updateTask } from "../firebase";
 import { useParams, useBeforeUnload } from "react-router-dom";
 import StringList from "../components/StringList";
 
+export const useTaskState = (inputTask: Task): [Task, React.Dispatch<React.SetStateAction<Task>>, boolean, (e: any)=>void] => {
+  const [task, setTask] = useState<Task>(inputTask);
+  const [modified, setModified] = useState<boolean>(false);
+  const handleUpdateField = (e: any) => {
+    setModified(true);
+    setTask({...task, [e.target.name]: e.target.value});
+  }
+  return [task, setTask, modified, handleUpdateField];
+}
+
 export default ({create}: {create: boolean}) => {
 
-  const [task, setTask] = useState<Task>(defaultTask);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [modified, setModified] = useState<boolean>(false);
+  const  [task, setTask, modified, handleUpdateField] = useTaskState(defaultTask);
 
   const id = useParams().id;
 
@@ -29,18 +38,7 @@ export default ({create}: {create: boolean}) => {
     }
   }, [setTask, setLoaded]);
 
-  const handleUpdateTask = async (e: any) => {
-    e.preventDefault();
-    const res = await updateTask(task);
-    window.location.href = "/";
-  }
-
-  const handleUpdateField = (e: any) => {
-    setModified(true);
-    setTask({...task, [e.target.name]: e.target.value});
-  }
-
-  useBeforeUnload(React.useCallback(async () => {
+  useBeforeUnload(useCallback(async () => {
     if (modified) {
       const res = await updateTask(task);
     }

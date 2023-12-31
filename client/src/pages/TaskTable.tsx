@@ -1,11 +1,13 @@
 import Header from "../components/Header";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button, Card, Col, Container, Form, Row, Table } from "react-bootstrap";
 import { getAllTasks, updateTask } from "../firebase";
 import { Priority, Status, Subteam, Task } from "../data/Types";
 import SelectorDropdown from "../components/SelectorDropdown";
 import CheckerDropdown, { all } from "../components/CheckerDropdown";
 import SearchMenu, { SearchQuery, createSearchFilter, useSearch } from "../components/SearchMenu";
+import { useTaskState } from "./TaskView";
+import { useBeforeUnload } from "react-router-dom";
 
 const dateConvert = (s: string): string => {
   const d = new Date(s);
@@ -73,7 +75,7 @@ export default () => {
 
   const updateTable = () =>
     setLines((tasks ?? []).filter(createSearchFilter(search)).sort(sortFunctionBackwards).map((task, id) => {
-      return <TaskLineItem task={task} key={id}></TaskLineItem>;
+      return <TaskLineItem inputTask={task} key={id}></TaskLineItem>;
     }));
 
   const search = useSearch(updateTable);
@@ -84,7 +86,29 @@ export default () => {
     ...(tasks ?? []).filter((t: Task) => t.identifier != task.identifier), task
   ]);
 
-  const TaskLineItem = ({ task }: { task: Task }) => {
+  const TaskLineItem = ({ inputTask }: { inputTask: Task }) => {
+
+    const  [task, setTask, modified, handleUpdateField] = useTaskState(inputTask);
+
+    const [timeoutHandle, setTimeoutHandle] = useState<NodeJS.Timeout | undefined>(undefined);
+
+    useEffect(() => {
+      if (modified) {
+        if (timeoutHandle !== undefined) {
+          clearTimeout(timeoutHandle);
+        }
+        setTimeoutHandle(setTimeout(async () => {
+          const res = await updateTask(task);
+        }, 5000));
+      }
+    }, [task]);
+
+    useBeforeUnload(useCallback(async () => {
+      if (modified) {
+        const res = await updateTask(task);
+      }
+    }, [updateTask, task]));
+
     return (
       <tr>
         <td>
@@ -94,37 +118,39 @@ export default () => {
         <td>{task.project}</td>
         <td>
           <SelectorDropdown
-            options={{}}
+            options={Priority}
             defaultValue={task.priority ?? Priority.MID}
             size="sm"
-            onChange={(_: any) => _}
-            disabled
+            onChange={handleUpdateField}
+            // disabled
             name="priority"
+            noArrow
           />
         </td>
         <td>
           <SelectorDropdown
-            options={{}}
+            options={Subteam}
             defaultValue={task.subteam}
             size="sm"
-            onChange={(_: any) => _}
-            disabled
+            onChange={handleUpdateField}
+            // disabled
             name="subteam"
+            noArrow
           />
         </td>
         <td>
           <SelectorDropdown
             options={Status}
             defaultValue={task.status}
-            noArrow
             size="sm"
-            onChange={(e: any) => {
-              task.status = e.target.value;
-              updateTask(task);
-              replaceTask(task);
-              // populateTable();
-            }}
+            // onChange={(e: any) => {
+            //   task.status = e.target.value;
+            //   updateTask(task);
+            //   replaceTask(task);
+            // }}
+            onChange={handleUpdateField}
             name="status"
+            noArrow
           />
         </td>
 
