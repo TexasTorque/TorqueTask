@@ -186,3 +186,7 @@ a {
 .col-head {
   width: fit-content;
 }
+
+.date-col {
+  max-width: 6rem;
+}

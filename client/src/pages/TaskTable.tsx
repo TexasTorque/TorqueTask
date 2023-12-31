@@ -24,11 +24,16 @@ export const listConvert = (l: string[], m: number): string => {
   return part.substring(0, i) + "...";
 }
 
+export const stringConstrain = (s: string, l: number): string => {
+  if (s.length < l) return s;
+  const words: string[] = s.substring(0, l).split(" ");
+  words.pop();
+  return words.join(" ") + "...";
+}
+
 export default () => {
   const [tasks, setTasks] = useState<Task[]>();
 
-
- 
   useEffect(() => populateTable(), [setTasks]);
 
   const populateTable = () => { getAllTasks().then(setTasks) };
@@ -114,8 +119,8 @@ export default () => {
         <td>
           <a href={"/task/" + task.identifier}>{task.identifier}</a>
         </td>
-        <td>{task.name}</td>
-        <td>{task.project}</td>
+        <td>{stringConstrain(task.name, 50)}</td>
+        <td>{stringConstrain(task.project, 25)}</td>
         <td>
           <SelectorDropdown
             options={Priority}
@@ -155,9 +160,14 @@ export default () => {
         </td>
 
         <td>{listConvert(task.assignees ?? [], 25)}</td>
-        <td>{dateConvert(task.startDate)}</td>
-        <td style={{color: new Date(task.endDate) < new Date() ? "#FF726B" : "#FFFFFF"}}>{dateConvert(task.endDate)}</td>
-      </tr>
+        {/* <td>{dateConvert(task.startDate)}</td> */}
+        {/* <td style={{color: new Date(task.endDate) < new Date() ? "#FF726B" : "#FFFFFF"}}>{dateConvert(task.endDate)}</td> */}
+        <td className="date-col"><Form.Control autoComplete="off" size="sm" type="date" value={task.startDate}
+          onChange={handleUpdateField} name="startDate" /></td>
+        <td className="date-col"><Form.Control autoComplete="off" size="sm" type="date" value={task.endDate}
+          onChange={handleUpdateField} name="endDate" /></td>
+
+        </tr>
     );
   };
 
