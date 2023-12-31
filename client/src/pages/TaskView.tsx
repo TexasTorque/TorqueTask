@@ -8,13 +8,14 @@ import { useEffect, useState } from "react";
 import React from "react";
 import SelectorDropdown from "../components/SelectorDropdown";
 import { getNextIdentifier, getTaskByID, updateTask } from "../firebase";
-import { useParams } from "react-router-dom";
+import { useParams, useBeforeUnload } from "react-router-dom";
 import StringList from "../components/StringList";
 
 export default ({create}: {create: boolean}) => {
 
   const [task, setTask] = useState<Task>(defaultTask);
   const [loaded, setLoaded] = useState<boolean>(false);
+  const [modified, setModified] = useState<boolean>(false);
 
   const id = useParams().id;
 
@@ -35,8 +36,15 @@ export default ({create}: {create: boolean}) => {
   }
 
   const handleUpdateField = (e: any) => {
+    setModified(true);
     setTask({...task, [e.target.name]: e.target.value});
   }
+
+  useBeforeUnload(React.useCallback(async () => {
+    if (modified) {
+      const res = await updateTask(task);
+    }
+  }, [updateTask, task]));
 
   const SIZE = undefined;
 
@@ -45,16 +53,18 @@ export default ({create}: {create: boolean}) => {
   return (
     <div className="main">
       <Header/>
-      <Container>
+      <Container className="roomfac">
         <Form>
           <Row>
+            <Col lg={1}></Col>
+            
             <Col lg={2}>      
               <Form.Group className="mb-3" controlId="taskForm.identifier">
                 <Form.Label>Task Number</Form.Label>
                 <Form.Control autoComplete="off" size={SIZE} type="text" placeholder="" disabled value={task?.identifier}/>
               </Form.Group>
             </Col>
-            <Col lg={4}>      
+            <Col lg={5}>      
               <Form.Group className="mb-3" controlId="taskForm.name">
                 <Form.Label>Task Name</Form.Label>
                 <Form.Control autoComplete="off" size={SIZE} type="text" value={task.name} 
@@ -67,63 +77,63 @@ export default ({create}: {create: boolean}) => {
                 <Form.Control autoComplete="off" size={SIZE} type="text"  value={task.project} 
                     onChange={handleUpdateField} name="project" />
               </Form.Group>
+
+              <Col lg={1}></Col>
             </Col>
-            <Col lg={1}> 
+          </Row>
+        
+          <Row>
+            <Col lg={1}></Col>
+
+            <Col lg={2}> 
               <Form.Group className="mb-3" controlId="taskForm.priority">
                 <Form.Label>Priority</Form.Label>
                 <SelectorDropdown options={Priority} defaultValue={task.priority ?? Priority.MID} size={SIZE} noArrow
                     onChange={handleUpdateField} name="priority"/>
               </Form.Group> 
             </Col>
-
-            <Col lg={2}>      
-              <Form.Group className="mb-3" controlId="taskForm.updateButton">
-                <Form.Label className="invisible">{"Update task"}</Form.Label>
-                <Button className="w-100" variant="success" size={SIZE} onClick={handleUpdateTask}>Update Task</Button>
-              </Form.Group>
-            </Col>
-          </Row>
-        
-          <Row>
-            <Col lg={3}> 
+            <Col lg={2}> 
               <Form.Group className="mb-3" controlId="taskForm.status">
                 <Form.Label>Status</Form.Label>
                 <SelectorDropdown options={Status} defaultValue={task.status} size={SIZE} 
                     onChange={handleUpdateField} name="status"/>
               </Form.Group> 
             </Col>
-            <Col lg={3}> 
+            <Col lg={2}> 
               <Form.Group className="mb-3" controlId="taskForm.subteam">
                 <Form.Label>Subteam</Form.Label>
                 <SelectorDropdown options={Subteam} defaultValue={task.subteam} size={SIZE} 
                     onChange={handleUpdateField} name="subteam" />
               </Form.Group> 
             </Col>
-            <Col lg={3}> 
+            <Col lg={2}> 
               <Form.Group className="mb-3" controlId="taskForm.startDate">
                 <Form.Label>Start Date</Form.Label>
                 <Form.Control autoComplete="off" size={SIZE} type="date" value={task.startDate}
                   onChange={handleUpdateField} name="startDate" />
               </Form.Group> 
             </Col>
-            <Col lg={3}> 
+            <Col lg={2}> 
               <Form.Group className="mb-3" controlId="taskForm.endDate">
                 <Form.Label>End Date</Form.Label>
                 <Form.Control autoComplete="off" size={SIZE} type="date" value={task.endDate}
                   onChange={handleUpdateField} name="endDate" />
               </Form.Group> 
+
+              <Col lg={1}></Col>
             </Col>
           </Row>
 
           <Row>
-            <Col lg={9}>
+            <Col lg={1}></Col>
+
+            <Col lg={7}>
               <Form.Group className="mb-3" controlId="taskForm.details">
                 <Form.Label>Details</Form.Label>
                 <Form.Control className="details-view" autoComplete="off" size={SIZE} as="textarea"  value={task.details} 
                     onChange={handleUpdateField} name="details" />
               </Form.Group> 
             </Col>
-
             <Col lg={3}>
               <Form.Group className="mb-3" controlId="taskForm.assignees">
                 <Form.Label>Assignees</Form.Label>
@@ -131,6 +141,7 @@ export default ({create}: {create: boolean}) => {
               </Form.Group> 
             </Col>
 
+            <Col lg={1}></Col>
           </Row>
 
         </Form>
