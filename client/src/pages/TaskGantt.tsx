@@ -9,16 +9,21 @@ import { getAllTasks } from "../firebase";
 import { Status, Subteam, Task } from "../data/Types";
 import SelectorDropdown from "../components/SelectorDropdown";
 
-import Gantt from "frappe-gantt";
 import SearchMenu, { createSearchFilter, useSearch } from "../components/SearchMenu";
 
-export default () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [height, setHeight] = useState<string>();
+import { Gantt, Task as GaantTask, EventOption, StylingOption, ViewMode, DisplayOption } from 'gantt-task-react';
+import "gantt-task-react/dist/index.css";
 
-  // Alternative libraries
-  // https://jscharting.com/examples/chart-types/gantt/rounded/#
-  // https://developers.google.com/chart/interactive/docs/gallery/ganttchart
+export default () => {
+
+  // Reference:
+  // https://github.com/MaTeMaTuK/gantt-task-react/blob/main/example/src/App.tsx
+  // https://matematuk.github.io/gantt-task-react/
+
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [gaantTasks, setGaantTasks] = useState<GaantTask[]>([]);
+
+  const search = useSearch(() => {});
 
   useEffect(() => {
     getAllTasks().then(tasks => {
@@ -26,64 +31,29 @@ export default () => {
     });
   }, [setTasks]);
 
-  useEffect(() => renderGantt(), [tasks]);
-
-  const renderGantt = () => {
-    const t = tasks.filter(createSearchFilter(search));
-    setHeight(`${56 * Math.max(t.length, 1) + 50}px`);
-    new Gantt("#gantt", t.length <= 0 ? [{
-      name: "&nbsp;&nbsp;&nbsp;No tasks to display.",
-    }] : formatForGantt(t), {
-        header_height: 45,
-        step: 2,
-        bar_height: 40,
-        bar_corner_radius: 3,
-        arrow_curve: 5,
-        padding: 16,
-        view_mode: 'Day',
-        date_format: 'MM/DD/YYYY',
-        language: 'en',
-        on_date_change: t => t.progress= 100,
-        custom_popup_html: t => `<div class="popup"><p>${t.id}</p></div>`,
-        on_click: t => window.location.href = "/task/" + t.id,
-      });
+  const subteamColors = {
+    [Subteam.PROG]: "#dc3545",
+    [Subteam.MECH]: "#0d6efd",
+    [Subteam.BIZ]: "#198754",
+    [Subteam.CAD]: "#0dcaf0",
+    [Subteam.MANUF]: "#6c757d",
+    [Subteam.ELEC]: "#ffc107",
   }
 
-  // const progressLevels = {
-  //   [Status.NOT_STARTED]: 5,
-  //   [Status.IN_PROGRESS]: -1,
-  //   [Status.BLOCKED]: 0,
-  //   [Status.COMPLETED]: 100,
-  // }
-
-  const calcProgressBar = (t: Task): number => {
-    // const p = progressLevels[t.status];
-    // if (p != -1) return p;
-    const p = 100;
-
-    const s = new Date(t.startDate).getTime();
-    const e = new Date(t.endDate).getTime();
-    const n = Date.now()
-    const o = 0 * 60 * 60 * 1000;
-    return (n - o - s) / (e - s) * 100;
-  }
-
-  const search = useSearch(renderGantt);
-
-  const formatForGantt = (tasks: Task[]): any[] => {
-    var tasksForGantt: any[] = [];
-    tasks.map(task => {
-      tasksForGantt.push({
-        id: task.identifier,
-        name: task.name,
-        start: task.startDate,
-        end: task.endDate,
-        dependencies: "",
-        progress: calcProgressBar(task)
-      });
-    });
-    return tasksForGantt;
-  }
+  useEffect(() => {
+    const filteredTasks: Task[] = tasks.filter(createSearchFilter(search));
+    const localGaantTasks: GaantTask[] = filteredTasks.map((task: Task): GaantTask => ({
+      start: new Date(task.startDate),
+      end: new Date(task.endDate),
+      name: task.name,
+      id: task.identifier,
+      type: 'task',
+      progress: 100,
+      isDisabled: false,
+      styles: { progressColor: subteamColors[task.subteam], progressSelectedColor: '#ff9e0d' },
+    }));
+    setGaantTasks(localGaantTasks);
+  }, [tasks]);
 
   return (
     <>
@@ -91,11 +61,12 @@ export default () => {
       <SearchMenu search={search}/>
       <br></br>
       <Container fluid>
-        <svg style={{height: height}} id="gantt"></svg>
-      </Container>
-      <br></br>
-      <Container fluid>
-        <p><b>Tip:</b> Double click on a cell to go to that tasks. </p>
+        {gaantTasks.length > 0 ? 
+          <Gantt 
+            tasks={gaantTasks} 
+            listCellWidth={""}
+          />
+         : <></>}
       </Container>
     </>
   );
