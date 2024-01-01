@@ -47,7 +47,7 @@ export default () => {
     const localGaantTasks: GaantTask[] = filteredTasks.map((task: Task): GaantTask => ({
       start: new Date(task.startDate),
       end: new Date(task.endDate),
-      name: task.name,
+      name: task.name + ' (' + task.project + ')',
       id: task.identifier,
       type: 'task',
       progress: 100,
@@ -77,6 +77,14 @@ export default () => {
     setViewMode(e.target.value);
   }
 
+  const clickOpenHandler = (task: GaantTask) => {
+    window.location.href = '/task/' + task.id;
+  }
+
+  const selectHandler = (task: GaantTask, isSelected?: boolean) => {
+    clickOpenHandler(task);
+  };
+
   return (
     <>
       <Header fluid/>
@@ -85,7 +93,7 @@ export default () => {
       <Container fluid>
         <Card className="bg-dark text-white">
           {/* <Card.Header as="h6">Search Menu</Card.Header> */}
-          <Card.Header as="h6">
+          <Card.Header as="p" className="gaant-head">
             <Row>
               <Col lg={1}> 
                 <SelectorDropdown
@@ -96,20 +104,30 @@ export default () => {
                     name="priority"
                   />
               </Col>
+              <Col lg={3}>
+                <p className="p-tip"><b>Tip:</b> click on a box to view its task</p>
+              </Col>
             </Row>
           </Card.Header>
-          <Card.Body style={{padding: 0}}>
+          <Card.Body style={{backgroundColor: "white", padding: 0}}>
             {gaantTasks.length > 0 ? 
-              <Gantt 
+              <Gantt
                 tasks={gaantTasks} 
                 listCellWidth={""}
                 viewMode={viewMode}
                 columnWidth={colWidth}
+                onDoubleClick={clickOpenHandler}
+                onSelect={selectHandler}
               />
             : <></>}
           </Card.Body>
+          <Card.Footer as="p">
+          </Card.Footer>
         </Card>
+        <br></br>
+        <br></br>
       </Container>
     </>
   );
 }
+

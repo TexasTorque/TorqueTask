@@ -232,3 +232,12 @@ a {
   float: right;
   width: 1.5rem;
 }
+
+.gaant-head {
+  padding-top: .9rem;
+  padding-bottom: .2rem;
+}
+
+.p-tip {
+  margin-top: .14rem;
+}
