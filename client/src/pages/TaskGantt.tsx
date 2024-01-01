@@ -2,7 +2,7 @@
 import Header from "../components/Header";
 
 import {ReactElement, useEffect, useState } from "react";
-import { Container, Table } from "react-bootstrap";
+import { Card, Col, Container, Row, Table } from "react-bootstrap";
 import TorqueLogo from "../imgs/TorqueLogo.png";
 import { getAllTasks } from "../firebase";
 // import { Task } from "../../../src/types";
@@ -53,7 +53,27 @@ export default () => {
       styles: { progressColor: subteamColors[task.subteam], progressSelectedColor: '#ff9e0d' },
     }));
     setGaantTasks(localGaantTasks);
-  }, [tasks]);
+  }, [tasks, search]);
+
+  const defaultViewMode = ViewMode.Week;
+
+  const colWidths = {
+    [ViewMode.Hour]: 65,
+    [ViewMode.QuarterDay]: 65,
+    [ViewMode.HalfDay]: 65,
+    [ViewMode.Day]: 50,
+    [ViewMode.Week]: 200,
+    [ViewMode.Month]: 300,
+    [ViewMode.Year]: 350,
+  }
+
+  const [colWidth, setColWidth] = useState<number>(colWidths[defaultViewMode]);
+  const [viewMode, setViewMode] = useState<ViewMode>(defaultViewMode);
+
+  const updateViewMode = (e: any) => {
+    setColWidth(colWidths[e.target.value as ViewMode]);
+    setViewMode(e.target.value);
+  }
 
   return (
     <>
@@ -61,12 +81,32 @@ export default () => {
       <SearchMenu search={search}/>
       <br></br>
       <Container fluid>
-        {gaantTasks.length > 0 ? 
-          <Gantt 
-            tasks={gaantTasks} 
-            listCellWidth={""}
-          />
-         : <></>}
+        <Card className="bg-dark text-white">
+          {/* <Card.Header as="h6">Search Menu</Card.Header> */}
+          <Card.Header as="h6">
+            <Row>
+              <Col lg={1}> 
+                <SelectorDropdown
+                    options={[ViewMode.Day, ViewMode.Week, ViewMode.Month]}
+                    defaultValue={defaultViewMode}
+                    size="sm"
+                    onChange={updateViewMode}
+                    name="priority"
+                  />
+              </Col>
+            </Row>
+          </Card.Header>
+          <Card.Body style={{padding: 0}}>
+            {gaantTasks.length > 0 ? 
+              <Gantt 
+                tasks={gaantTasks} 
+                listCellWidth={""}
+                viewMode={viewMode}
+                columnWidth={colWidth}
+              />
+            : <></>}
+          </Card.Body>
+        </Card>
       </Container>
     </>
   );

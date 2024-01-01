@@ -59,7 +59,12 @@ const SearchMenu = ({search}: {search: Search}) => {
   }
 
   useEffect(() => {
-    localStorage.setItem("searchQuery", JSON.stringify(searchQuery));
+    const storedSearchQuery = defaultSearch();
+    storedSearchQuery.priority = searchQuery.priority;
+    storedSearchQuery.subteam = searchQuery.subteam;
+    storedSearchQuery.status = searchQuery.status;
+
+    localStorage.setItem("searchQuery", JSON.stringify(storedSearchQuery));
   }, [searchQuery])
 
   return (
