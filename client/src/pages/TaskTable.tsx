@@ -37,7 +37,6 @@ export default () => {
 
   const [lines, setLines] = useState<JSX.Element[]>([]);
 
-
   const [sort, setSort] = useState<string>("endDate");
   const [backwards, setBackwards] = useState<boolean>(false);
 
@@ -89,12 +88,13 @@ export default () => {
 
   const TaskLineItem = ({ inputTask }: { inputTask: Task }) => {
 
-    const  [task, setTask, modified, handleUpdateField] = useTaskState(inputTask);
+    const [task, setTask, modified, handleUpdateField] = useTaskState(inputTask);
 
     const [timeoutHandle, setTimeoutHandle] = useState<NodeJS.Timeout | undefined>(undefined);
 
     useEffect(() => {
       if (modified) {
+        replaceTask(task);
         console.log(task);
         if (timeoutHandle !== undefined) {
           clearTimeout(timeoutHandle);
