@@ -52,6 +52,8 @@ export default () => {
 
   const priorityLevel = (p: Priority) => priorityLevels[p ?? Priority.MID];
 
+  // This would be better implemented as a function that returns a sorting function.
+  // Each sorting function could be individually defined.
   const sortFunction = (a: Task, b: Task): number => {
     if (sort == "")
       return idInt(a) - idInt(b);
@@ -176,7 +178,6 @@ export default () => {
   };
 
   const updateSortField = (e: any) => {
-    console.log(e);
     const f = e.target.name;
     if (f === sort) {
       setBackwards(!backwards);

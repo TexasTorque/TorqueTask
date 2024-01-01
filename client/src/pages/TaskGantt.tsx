@@ -40,8 +40,10 @@ export default () => {
     [Subteam.ELEC]: "#ffc107",
   }
 
+  const dateSortFunction  = (a: Task, b: Task): number => (new Date(a.startDate)).getTime() - (new Date(b.startDate)).getTime();
+
   useEffect(() => {
-    const filteredTasks: Task[] = tasks.filter(createSearchFilter(search));
+    const filteredTasks: Task[] = tasks.filter(createSearchFilter(search)).sort(dateSortFunction);
     const localGaantTasks: GaantTask[] = filteredTasks.map((task: Task): GaantTask => ({
       start: new Date(task.startDate),
       end: new Date(task.endDate),
