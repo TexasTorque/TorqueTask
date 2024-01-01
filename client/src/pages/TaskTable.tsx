@@ -95,7 +95,6 @@ export default () => {
     useEffect(() => {
       if (modified) {
         replaceTask(task);
-        console.log(task);
         if (timeoutHandle !== undefined) {
           clearTimeout(timeoutHandle);
         }

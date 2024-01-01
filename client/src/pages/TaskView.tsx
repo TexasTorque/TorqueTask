@@ -14,6 +14,7 @@ import StringList from "../components/StringList";
 export const useTaskState = (inputTask: Task): [Task, React.Dispatch<React.SetStateAction<Task>>, boolean, (e: any)=>void] => {
   const [task, setTask] = useState<Task>(inputTask);
   const [modified, setModified] = useState<boolean>(false);
+
   const handleUpdateField = (e: any) => {
     setModified(true);
     setTask({...task, [e.target.name]: e.target.value});
@@ -24,7 +25,7 @@ export const useTaskState = (inputTask: Task): [Task, React.Dispatch<React.SetSt
 export default ({create}: {create: boolean}) => {
 
   const [loaded, setLoaded] = useState<boolean>(false);
-  const  [task, setTask, modified, handleUpdateField] = useTaskState(defaultTask);
+  const [task, setTask, modified, handleUpdateField] = useTaskState(defaultTask);
 
   const id = useParams().id;
 
@@ -91,17 +92,17 @@ export default ({create}: {create: boolean}) => {
               </Form.Group> 
             </Col>
             <Col lg={2}> 
-              <Form.Group className="mb-3" controlId="taskForm.status">
-                <Form.Label>Status</Form.Label>
-                <SelectorDropdown options={Status} defaultValue={task.status} size={SIZE} 
-                    onChange={handleUpdateField} name="status"/>
-              </Form.Group> 
-            </Col>
-            <Col lg={2}> 
               <Form.Group className="mb-3" controlId="taskForm.subteam">
                 <Form.Label>Subteam</Form.Label>
                 <SelectorDropdown options={Subteam} defaultValue={task.subteam} size={SIZE} 
                     onChange={handleUpdateField} name="subteam" />
+              </Form.Group> 
+            </Col>
+            <Col lg={2}> 
+              <Form.Group className="mb-3" controlId="taskForm.status">
+                <Form.Label>Status</Form.Label>
+                <SelectorDropdown options={Status} defaultValue={task.status} size={SIZE} 
+                    onChange={handleUpdateField} name="status"/>
               </Form.Group> 
             </Col>
             <Col lg={2}> 
