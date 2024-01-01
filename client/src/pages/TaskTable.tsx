@@ -195,7 +195,7 @@ export default () => {
       <span className="flt-left">{name}</span>
       <Button variant={sortColor(field)} size="sm" className="sort-btn flt-right" onClick={updateSortField} name={field}>{sortSymbol(field)}</Button>
     </th>
-    );
+  );
 
   return (
     <>
