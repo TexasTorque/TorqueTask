@@ -3,7 +3,7 @@ import { Button, Col, Container, Form, FormControlProps, Nav, Navbar, Row, Table
 import TorqueLogo from "../imgs/TorqueLogo.png";
 
 import Header from "../components/Header";
-import { Task, dateFromStrISO, dateToStrISO, defaultTask, Subteam, Status, Priority} from "../data/Types";
+import { Task, dateFromStrISO, dateToStrISO, defaultTask, Subteam, Status, Priority, dateAdd, oneDay, timeDiff} from "../data/Types";
 import { useCallback, useEffect, useState } from "react";
 import React from "react";
 import SelectorDropdown from "../components/SelectorDropdown";
@@ -17,10 +17,24 @@ export const useTaskState = (inputTask: Task): [Task, React.Dispatch<React.SetSt
 
   const handleUpdateField = (e: any) => {
     setModified(true);
-    setTask({...task, [e.target.name]: e.target.value});
+
+    const localTask = {...task, [e.target.name]: e.target.value};
+
+    if (timeDiff(localTask) < 0) {
+      alert("Start date cannot be after end date");
+
+      if (e.target.name === "startDate") {
+        localTask.startDate = dateAdd(localTask.endDate, -oneDay);
+      } else if (e.target.name === "endDate") {
+        localTask.endDate = dateAdd(localTask.startDate, oneDay);
+      }
+    }
+
+    setTask(localTask);
   }
   return [task, setTask, modified, handleUpdateField];
 }
+
 
 export default ({create}: {create: boolean}) => {
 
@@ -41,6 +55,7 @@ export default ({create}: {create: boolean}) => {
 
   useBeforeUnload(useCallback(async () => {
     if (modified) {
+     
       const res = await updateTask(task);
     }
   }, [updateTask, task]));

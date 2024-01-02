@@ -10,10 +10,7 @@ import { useTaskState } from "./TaskView";
 import { useBeforeUnload } from "react-router-dom";
 import EditableTableTextEntry, { stringConstrain } from "../components/EditableTextEntry";
 
-const dateConvert = (s: string): string => {
-  const d = new Date(s);
-  return "" + (d.getMonth() + 1) + "/" + d.getDate() + "/" + ("" + d.getFullYear()).substring(2);
-}
+
 
 export const listConvert = (l: string[], m: number): string => {
   m -= 3;
