@@ -26,15 +26,21 @@ export const createSearchFilter = (search: Search) => {
 type SearchSetter = React.Dispatch<React.SetStateAction<SearchQuery>>;
 type Search = [SearchQuery, SearchSetter];
 
+const defaultSearch = (): SearchQuery => {
+  return {
+    name: "", 
+    project: "", 
+    status: [Status.NOT_STARTED, Status.IN_PROGRESS, Status.BLOCKED],
+    subteam: all(Subteam),
+    assignee: "",
+    priority: all(Priority),
+  }
+};
+
 export const useSearch = (update?: Function): Search => {
-  const search = useState<SearchQuery>({
-      name: "", 
-      project: "", 
-      status: [Status.NOT_STARTED, Status.IN_PROGRESS, Status.BLOCKED], 
-      subteam: all(Subteam),
-      assignee: "",
-      priority: all(Priority),
-    });
+  const storedQueryJSON = localStorage.getItem("searchQuery");
+  const storedQuery = storedQueryJSON === null ? defaultSearch() : JSON.parse(storedQueryJSON);
+  const search = useState<SearchQuery>(storedQuery);
 
   useEffect(update ? () => update() : () => {}, [search[0]]);
   return search;
@@ -47,6 +53,19 @@ const SearchMenu = ({search}: {search: Search}) => {
   const updateSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery({...searchQuery, [e.target.name]: e.target.value});
   };
+
+  const setToDefault = (e: any) => {
+    setSearchQuery(defaultSearch());
+  }
+
+  useEffect(() => {
+    const storedSearchQuery = defaultSearch();
+    storedSearchQuery.priority = searchQuery.priority;
+    storedSearchQuery.subteam = searchQuery.subteam;
+    storedSearchQuery.status = searchQuery.status;
+
+    localStorage.setItem("searchQuery", JSON.stringify(storedSearchQuery));
+  }, [searchQuery])
 
   return (
       <Container fluid>
@@ -95,6 +114,14 @@ const SearchMenu = ({search}: {search: Search}) => {
                   <Form.Control autoComplete="off" size="sm" type="text" onChange={updateSearchQuery} name="assignee" />
                 </Form.Group>
               </Col>
+              { true  ?
+                (<Col sm={1}>      
+                  <Form.Group className="mb-3" controlId="search.assignee">
+                    <Form.Label className="invisible">12345678</Form.Label>
+                    <Button className="w-60" variant="warning" size="sm" onClick={setToDefault}>Reset</Button>
+                  </Form.Group>
+                </Col>) : (<></>)
+              }
             </Row>
           </Card.Body>
         </Card>

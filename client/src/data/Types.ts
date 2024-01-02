@@ -1,8 +1,9 @@
 export enum Status {
   NOT_STARTED = "Not Started",
   IN_PROGRESS = "In Progress",
-  BLOCKED = "Blocked",
   COMPLETED = "Completed",
+  BLOCKED = "Blocked",
+  CANCELED = "Canceled",
 }
 
 export enum Subteam {
@@ -39,6 +40,9 @@ export interface Task {
 export const today = (offset: number = 0): Date => new Date(Date.now() + offset);
 export const dateToStrISO = (d: Date): string => d.toISOString().substring(0, 10);
 export const dateFromStrISO = (v: string) => new Date(v + "T12:00:00");
+export const dateAdd = (s: string, t: number): string => dateToStrISO(new Date(new Date(s).getTime() + t));
+export const oneDay = 1000 * 60 * 60 * 24;
+export const timeDiff = (t: Task): number => (new Date(t.endDate)).getTime() - (new Date(t.startDate)).getTime();
 
 export const defaultTask = { 
     identifier: "",

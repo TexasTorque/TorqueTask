@@ -175,14 +175,69 @@ a {
 }
 
 .sort-btn {
-  height: 1.25rem;
   padding: 0rem;
-  padding-bottom: .5rem;
+  padding-top: .1rem;
+  padding-bottom: 1.3rem;
   padding-left: .2rem;
   padding-right: .2rem;
   margin-bottom: .15rem;
+  margin-top: .19rem;
+  height: 1.25rem;
+  width: 1.5rem;
 }
 
 .col-head {
   width: fit-content;
+}
+
+.date-col {
+  max-width: 6rem;
+}
+
+.ete-btn {
+  height: 1.5rem;
+  width: 1.5rem;
+  padding: 0rem;
+  padding-top: .1rem;
+  padding-bottom: 1.3rem;
+  padding-left: .2rem;
+  padding-right: .2rem;
+  margin-top: .19rem;
+}
+
+.flt-left {
+  width: 70%;
+  float: left;
+}
+
+.ete-left {
+  width: 85%;
+  float: left;
+}
+
+.flt-right {
+  float: right;
+}
+
+.ete-right {
+  float: right;
+}
+
+
+.text-tbl-entry {
+  margin-top: 2px;
+}
+
+.ete-plhldr {
+  float: right;
+  width: 1.5rem;
+}
+
+.gaant-head {
+  padding-top: .9rem;
+  padding-bottom: .2rem;
+}
+
+.p-tip {
+  margin-top: .14rem;
 }

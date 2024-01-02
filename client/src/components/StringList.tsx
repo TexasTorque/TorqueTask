@@ -32,6 +32,10 @@ const StringList = ({
   };
 
   useEffect(() => {
+    if (JSON.stringify(defaultValue) === JSON.stringify(values)) {
+      return;
+    }
+
     onChange({
       target: {
         name: name,
