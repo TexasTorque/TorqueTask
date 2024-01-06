@@ -4,27 +4,6 @@ import { Priority, Status, Subteam } from "../data/Types";
 
 type Size = "sm" | "lg" | undefined;
 
-export const itemColors = {
-  [Status.CANCELED]: "danger",
-  [Status.NOT_STARTED]: "secondary",
-  [Status.IN_PROGRESS]: "info",
-  [Status.BLOCKED]: "warning",
-  [Status.COMPLETED]: "success",
-
-  [Subteam.CAD]: "info",
-  [Subteam.MANUF]: "secondary",
-  [Subteam.MECH]: "primary",
-  [Subteam.ELEC]: "warning",
-  [Subteam.PROG]: "danger",
-  [Subteam.BIZ]: "success",
-
-  [Priority.HIGHEST]: "danger",
-  [Priority.HIGH]: "warning",
-  [Priority.MID]: "secondary",
-  [Priority.LOW]: "info",
-  [Priority.LOWEST]: "primary",
-};
-
 export const stringConstrain = (s: string, l: number): string => {
   if (s.length < l) return s;
   const words: string[] = s.substring(0, l).split(" ");
