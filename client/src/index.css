@@ -241,3 +241,8 @@ a {
 .p-tip {
   margin-top: .14rem;
 }
+
+.overtime {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}

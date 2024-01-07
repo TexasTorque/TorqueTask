@@ -30,6 +30,15 @@ export const useTaskState = (inputTask: Task): [Task, React.Dispatch<React.SetSt
       }
     }
 
+    // Only can have A-Z, a-z, 0-9, space, and hyphens in project name.
+    if (e.target.name == "project") {
+      const formattedProject = localTask.project.replace(/[^\w\s\-]/gi, '');
+      if (localTask.project !== formattedProject) {
+        alert("You may only use alphanumeric characters and spaces in project names");
+      }
+      localTask.project = formattedProject;
+    }
+
     setTask(localTask);
   }
   return [task, setTask, modified, handleUpdateField];

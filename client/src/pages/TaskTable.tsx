@@ -1,6 +1,6 @@
 import Header from "../components/Header";
 import { useCallback, useEffect, useState } from "react";
-import { Button, Card, Col, Container, Form, Row, Table } from "react-bootstrap";
+import { Button, Card, Col, Container, Form, OverlayTrigger, Popover, Row, Table } from "react-bootstrap";
 import { getAllTasks, updateTask } from "../firebase";
 import { Priority, Status, Subteam, Task } from "../data/Types";
 import SelectorDropdown from "../components/SelectorDropdown";
@@ -9,6 +9,8 @@ import SearchMenu, { SearchQuery, createSearchFilter, useSearch } from "../compo
 import { useTaskState } from "./TaskView";
 import { useBeforeUnload } from "react-router-dom";
 import EditableTableTextEntry, { stringConstrain } from "../components/EditableTextEntry";
+import EditableToggle from "../components/EditableTableToggle";
+import StringList from "../components/StringList";
 
 
 
@@ -115,21 +117,35 @@ export default () => {
           <a className="text-tbl-entry" href={"/task/" + task.identifier}>{task.identifier}</a>
         </td>
 
-        <EditableTableTextEntry
+        {/* <EditableTableTextEntry
           defaultValue={task.name ?? ""}
           size="sm"
           onChange={handleUpdateField}
           name="name"
           length={40}
-        />
+        /> */}
+
+        <EditableToggle
+          editor={<Form.Control autoComplete="off" size="sm" type="text" 
+            value={task.name ?? ""} className={"ete-left"}
+            onChange={handleUpdateField} name="name" />}
+          display={<span className="ete-left text-tbl-entry">{stringConstrain(task.name ?? "", 40)}</span>}
+        />      
         
-        <EditableTableTextEntry
+        {/* <EditableTableTextEntry
           defaultValue={task.project ?? ""}
           size="sm"
           onChange={handleUpdateField}
           name="project"
           length={25}
-        />
+        /> */}
+
+        <EditableToggle
+          editor={<Form.Control autoComplete="off" size="sm" type="text" 
+            value={task.project ?? ""} className={"ete-left"}
+            onChange={handleUpdateField} name="project" />}
+          display={<span className="ete-left text-tbl-entry">{stringConstrain(task.project ?? "", 25)}</span>}
+        />   
 
         <td>
           <SelectorDropdown
@@ -162,13 +178,20 @@ export default () => {
           />
         </td>
 
-        <td className="text-tbl-entry">{listConvert(task.assignees ?? [], 25)}</td>
+        {/* <td className="text-tbl-entry">{listConvert(task.assignees ?? [], 25)}</td> */}
+
+        <EditableToggle
+          editor={<StringList defaultValue={task.assignees ?? []} onChange={handleUpdateField} name="assignees"/>}
+          display={listConvert(task.assignees ?? [], 25)}
+        />
+
         {/* <td>{dateConvert(task.startDate)}</td> */}
         {/* <td style={{color: new Date(task.endDate) < new Date() ? "#FF726B" : "#FFFFFF"}}>{dateConvert(task.endDate)}</td> */}
         <td className="date-col"><Form.Control autoComplete="off" size="sm" type="date" value={task.startDate}
           onChange={handleUpdateField} name="startDate" /></td>
         <td className="date-col"><Form.Control autoComplete="off" size="sm" type="date" value={task.endDate}
-          onChange={handleUpdateField} name="endDate" /></td>
+          onChange={handleUpdateField} name="endDate" 
+          className={new Date(task.endDate) < new Date() ? "overtime" : ""}/></td>
 
         </tr>
     );
