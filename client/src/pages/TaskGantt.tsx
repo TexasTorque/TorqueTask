@@ -13,6 +13,7 @@ import SearchMenu, { createSearchFilter, useSearch } from "../components/SearchM
 
 import { Gantt, Task as GaantTask, EventOption, StylingOption, ViewMode, DisplayOption } from 'gantt-task-react';
 import "gantt-task-react/dist/index.css";
+import { createToolTip } from "../components/ToolTip";
 
 export default () => {
 
@@ -85,6 +86,15 @@ export default () => {
     clickOpenHandler(task);
   };
 
+  const taskSupplier = (id: string): Task | null => {
+    for (const task of tasks) {
+      if (task.identifier === id) {
+        return task;
+      }
+    }
+    return null;
+  }
+
   return (
     <>
       <Header fluid/>
@@ -118,6 +128,7 @@ export default () => {
                 columnWidth={colWidth}
                 onDoubleClick={clickOpenHandler}
                 onSelect={selectHandler}
+                TooltipContent={createToolTip(taskSupplier)}
               />
             : <></>}
           </Card.Body>
