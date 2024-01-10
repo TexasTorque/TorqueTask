@@ -11,7 +11,7 @@ import { getNextIdentifier, getTaskByID, updateTask } from "../firebase";
 import { useParams, useBeforeUnload } from "react-router-dom";
 import StringList from "../components/StringList";
 
-export const useTaskState = (inputTask: Task): [Task, React.Dispatch<React.SetStateAction<Task>>, boolean, (e: any)=>void] => {
+export const useTaskState = (inputTask: Task): [Task, React.Dispatch<React.SetStateAction<Task>>, boolean, (e: any)=>void, Function] => {
   const [task, setTask] = useState<Task>(inputTask);
   const [modified, setModified] = useState<boolean>(false);
 
@@ -41,14 +41,14 @@ export const useTaskState = (inputTask: Task): [Task, React.Dispatch<React.SetSt
 
     setTask(localTask);
   }
-  return [task, setTask, modified, handleUpdateField];
+  return [task, setTask, modified, handleUpdateField, setModified];
 }
 
 
 export default ({create}: {create: boolean}) => {
 
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [task, setTask, modified, handleUpdateField] = useTaskState(defaultTask);
+  const [task, setTask, modified, handleUpdateField, setModified] = useTaskState(defaultTask);
 
   const id = useParams().id;
 
