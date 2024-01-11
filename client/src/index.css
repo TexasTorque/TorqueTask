@@ -246,3 +246,13 @@ a {
   background-color: #dc3545;
   border-color: #dc3545;
 }
+
+.tooltip-bg {
+  padding: .5rem;
+  background-color: white;
+}
+
+.tooltip-text {
+  color: black !important;
+
+}
