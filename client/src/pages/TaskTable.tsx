@@ -11,8 +11,7 @@ import { useBeforeUnload } from "react-router-dom";
 import EditableTableTextEntry, { stringConstrain } from "../components/EditableTextEntry";
 import EditableToggle from "../components/EditableTableToggle";
 import StringList from "../components/StringList";
-
-
+import EditableRow from "../components/EditableRow";
 
 export const listConvert = (l: string[], m: number): string => {
   m -= 3;
@@ -23,8 +22,6 @@ export const listConvert = (l: string[], m: number): string => {
   const i = part.lastIndexOf(", ");
   return part.substring(0, i) + "...";
 }
-
-
 
 export default () => {
   const [tasks, setTasks] = useState<Task[]>();
@@ -89,7 +86,7 @@ export default () => {
 
   const TaskLineItem = ({ inputTask }: { inputTask: Task }) => {
 
-    const [task, setTask, modified, handleUpdateField] = useTaskState(inputTask);
+    const [task, setTask, modified, handleUpdateField, setModified] = useTaskState(inputTask);
 
     const [timeoutHandle, setTimeoutHandle] = useState<NodeJS.Timeout | undefined>(undefined);
 
@@ -237,7 +234,9 @@ export default () => {
               <ColHead name={"End"} field={"endDate"}/>
             </tr>
           </thead>
-          <tbody>{lines}
+          <tbody>
+            <EditableRow setTasks={setTasks}/>
+            {lines}
           </tbody>
         </Table>
       </Container>
