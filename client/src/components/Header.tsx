@@ -12,11 +12,8 @@ const Header = ({fluid}: {fluid?: boolean}) => {
           <Nav.Link href="/table">
             <Nav.Link href="/table">Table</Nav.Link>
           </Nav.Link>
-          {/* <Nav.Link href="/gantt">
+          <Nav.Link href="/gantt">
             <Nav.Link href="/gantt">Gantt</Nav.Link>
-          </Nav.Link> */}
-          <Nav.Link href="/gyatt">
-            <Nav.Link href="/gyatt">Gyatt</Nav.Link>
           </Nav.Link>
           <Nav.Item className="nav-btn">
             <Button

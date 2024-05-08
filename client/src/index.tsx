@@ -21,7 +21,6 @@ root.render(
         <Route path="/new" element={<TaskView create={true} />} />
         <Route path="/task/:id" element={<TaskView create={false}/>} />
         <Route path="/gantt" element={<TaskGantt />} />
-        <Route path="/gyatt" element={<TaskGantt />} />
         <Route path="/docs" element={<UserGuide />} />
         <Route path='*' element={<NotFound />}/>
       </Routes>
